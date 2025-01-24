@@ -8,7 +8,8 @@ public class MoneyManager : MonoBehaviour
     public static float p2Money = 100f;
 
     // UI TextMeshPro to display money (using TextMeshProUGUI instead of Text)
-    public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI moneyTextP1;
+    public TextMeshProUGUI moneyTextP2;
 
     // Start is called before the first frame update
     void Start()
@@ -60,9 +61,8 @@ public class MoneyManager : MonoBehaviour
     // Update the UI TextMeshPro with the current money
     void UpdateMoneyDisplay()
     {
-        if (moneyText != null)
-        {
-            moneyText.text = "Money: " + p1Money.ToString("F2");  // Display money with 2 decimal places
-        }
+
+            moneyTextP1.text = "Money: " + p1Money.ToString("F2");  // Display money with 2 decimal places
+            moneyTextP2.text = "Money: " + p2Money.ToString("F2");  // Display money with 2 decimal places
     }
 }

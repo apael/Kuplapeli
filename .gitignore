@@ -1,5 +1,6 @@
 # Unity generated folders
-/Library/
+/Library/*
+/[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
