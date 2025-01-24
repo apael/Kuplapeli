@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class AttackMechanics : MonoBehaviour
 {
-    private UnitBaseStats UnitBaseStats;         // Reference to the unit's stats
-    private float nextAttackTime = 0f;   // Time tracker for attack cooldown
-    private Transform targetEnemy;       // Current target within range
-    private string enemyTag;             // Tag of the opposing team
+    private UnitBaseStats BaseStats;         // Reference to the unit's stats
+    private float nextAttackTime = 0f;      // Time tracker for attack cooldown
+    private Transform targetEnemy;          // Current target within range
 
     void Start()
     {
         // Retrieve the UnitStats component attached to this GameObject
-        UnitBaseStats = GetComponent<UnitBaseStats>();
+        BaseStats = GetComponent<UnitBaseStats>();
+            Debug.LogError(BaseStats);
 
-        if (UnitBaseStats == null)
+        if (BaseStats == null)
         {
             Debug.LogError("UnitStats component is missing on " + gameObject.name);
             return;
         }
 
-        // Determine the enemy's tag based on this unit's team
-        enemyTag = UnitBaseStats.team == "team 1" ? "team 2" : "team 1";
+        // Optional: Set the enemyTag dynamically based on team (if you want)
+        // enemyTag = BaseStats.team == "team 1" ? "team 2" : "team 1";
     }
 
     void Update()
@@ -28,10 +28,10 @@ public class AttackMechanics : MonoBehaviour
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
-            if (distance <= UnitBaseStats.range && Time.time >= nextAttackTime)
+            if (distance <= BaseStats.range && Time.time >= nextAttackTime)
             {
                 Attack();
-                nextAttackTime = Time.time + UnitBaseStats.attackSpeed; // Attack cooldown
+                nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
             }
         }
     }
@@ -42,27 +42,31 @@ public class AttackMechanics : MonoBehaviour
         UnitBaseStats enemyStats = targetEnemy.GetComponent<UnitBaseStats>();
         if (enemyStats != null)
         {
-            enemyStats.TakeDamage(UnitBaseStats.damage);
-
-            // Debug message for damage dealt
-            Debug.Log($"{gameObject.name} attacked {targetEnemy.name} for {UnitBaseStats.damage} damage!");
+            enemyStats.TakeDamage(BaseStats.damage);
+            Debug.Log($"{gameObject.name} attacked {targetEnemy.name} for {BaseStats.damage} damage!");
+        }
+        else
+        {
+            Debug.LogWarning("Enemy does not have UnitBaseStats component.");
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Check if the object entering range is on the opposing team
-        if (collision.CompareTag(enemyTag))
+        // Check if the object entering range is from the opposite team (not the same team)
+        if (collision.CompareTag(!BaseStats.team.Equals(1) ? "Team 2": "Team 1"))
         {
             targetEnemy = collision.transform; // Set it as the target
+            Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // Clear the target if it leaves the range
-        if (collision.CompareTag(enemyTag) && collision.transform == targetEnemy)
+        // Clear the target if the enemy leaves the range
+        if (collision.CompareTag(!BaseStats.team.Equals(1) ? "Team 2": "Team 1"))
         {
+            Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
             targetEnemy = null;
         }
     }
@@ -70,10 +74,10 @@ public class AttackMechanics : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         // Visualize the attack range in the editor
-        if (UnitBaseStats != null)
+        if (BaseStats != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, UnitBaseStats.range);
+            Gizmos.DrawWireSphere(transform.position, BaseStats.range);
         }
     }
 }

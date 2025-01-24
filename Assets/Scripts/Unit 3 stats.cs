@@ -6,7 +6,7 @@ public class Unit3stats : UnitBaseStats
         range = 5.0f;
         damage = 15;
         attackSpeed = 0.8f;
-        maxHealth = 120;
+        maxHealth = 12000;
         unitValue = 60;
     }
 }

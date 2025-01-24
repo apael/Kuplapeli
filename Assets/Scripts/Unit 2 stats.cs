@@ -8,7 +8,7 @@ public class Unit2stats : UnitBaseStats
         range = 2.5f;
         damage = 15;
         attackSpeed = 0.8f;
-        maxHealth = 120;
+        maxHealth = 60;
         unitValue = 60;
     }
 }
