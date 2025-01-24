@@ -13,22 +13,40 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     // The Canvas where the sprite will be placed (if it's a UI element)
     public Canvas canvas;
 
-    // The target position the sprite should move towards
 
-        public GameObject targetObject;
 
     // Weights for each sprite (higher values mean higher chance of selection)
-    public float sprite1Weight = 1f;
-    public float sprite2Weight = 2f;
-    public float sprite3Weight = 3f;
-    public float sprite4Weight = 4f;
-    public Vector3 specificStartPosition = new Vector3(0f, 0f, 0f); // Default value (can be changed in Inspector)
 
+    //P1
+    public float sprite1WeightP1 = 1f;
+    public float sprite2WeightP1 = 2f;
+    public float sprite3WeightP1 = 3f;
+    public float sprite4WeightP1 = 4f;
+
+    //P2
+    public float sprite1WeightP2 = 1f;
+    public float sprite2WeightP2 = 2f;
+    public float sprite3WeightP2 = 3f;
+    public float sprite4WeightP2 = 4f;
+
+    // Castles
+    public GameObject CastleP1;
+    public GameObject CastleP2;
+
+    public void sendUnitP1()
+{
+CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1);
+}
+
+       public void sendUnitP2()
+{
+CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2);
+} 
     // This method will be called by the button OnClick to create a random sprite and move it
-    public void CreateAndMoveRandomSprite()
+    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4 )
     {
         // Weights array for weighted random selection
-        float[] weights = { sprite1Weight, sprite2Weight, sprite3Weight, sprite4Weight };
+        float[] weights = { sp1, sp2, sp3, sp4 };
 
         // Choose a random index based on weights
         int randomIndex = GetRandomIndexByWeight(weights);
@@ -48,22 +66,36 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
             case 3: image.sprite = sprite4; break;
         }
 
-        // Position the sprite at a random location
-        spriteObject.transform.position = specificStartPosition;
+    // Convert the castle position to screen space
+    Vector3 castleWorldPosition = ownCastle.transform.position;
 
-        // Optional: If working with UI, set the parent to the Canvas
-        spriteObject.transform.SetParent(canvas.transform, false);
+    // Optional: Add an offset to spawn the sprite above the castle
+    castleWorldPosition.y += 2.0f; // You can adjust this value to control how high the sprite spawns
+
+    // Convert the world position to screen space
+    Vector3 screenPosition = Camera.main.WorldToScreenPoint(castleWorldPosition);
+
+    // Convert screen position to local position in the Canvas (UI space)
+    Vector2 localPosition;
+    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPosition, Camera.main, out localPosition);
+
+    // Set the position of the sprite object in the UI (canvas)
+    spriteObject.GetComponent<RectTransform>().localPosition = localPosition;
+
+    // Optional: Set the parent to the Canvas
+    spriteObject.transform.SetParent(canvas.transform, false);
+
 
         // Start moving the sprite towards the target
-        StartCoroutine(MoveSpriteToTarget(spriteObject));
+        StartCoroutine(MoveSpriteToTarget(spriteObject,enemyCastle));
     }
 
     // Coroutine to move the sprite towards the target position over time
-    private IEnumerator MoveSpriteToTarget(GameObject sprite)
+    private IEnumerator MoveSpriteToTarget(GameObject sprite, GameObject enemyCastle )
     {
         float duration = 2f;  // Duration of the movement
         Vector3 startPosition = sprite.transform.position;
-        Vector3 targetPosition = targetObject.transform.position; // Get target's position
+        Vector3 targetPosition = enemyCastle.transform.position; // Get target's position
         float timeElapsed = 0f;
 
         // Move the sprite towards the target position
@@ -109,18 +141,25 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     }
 
     // This method will update the weights when the second button is pressed
-    public void UpdateWeights(float newSprite1Weight, float newSprite2Weight, float newSprite3Weight, float newSprite4Weight)
+    public void UpdateWeightsP1(float sp1, float sp2, float sp3, float sp4)
     {
-        sprite1Weight = newSprite1Weight;
-        sprite2Weight = newSprite2Weight;
-        sprite3Weight = newSprite3Weight;
-        sprite4Weight = newSprite4Weight;
+        sprite1WeightP1 = sp1;
+        sprite2WeightP1 = sp2;
+        sprite3WeightP1 = sp3;
+        sprite4WeightP1 = sp4;
 
-        // Log to check the new weight values
-        Debug.Log($"Updated weights: Sprite1: {sprite1Weight}, Sprite2: {sprite2Weight}, Sprite3: {sprite3Weight}, Sprite4: {sprite4Weight}");
     }
 
-    public void UpdateWeightsButtonClick()
+        public void UpdateWeightsP2(float sp1, float sp2, float sp3, float sp4)
+    {
+        sprite1WeightP2 = sp1;
+        sprite2WeightP2 = sp2;
+        sprite3WeightP2 = sp3;
+        sprite4WeightP2 = sp4;
+
+    }
+
+    public void reRollP1()
 {
     // Define new weights (can be hardcoded or dynamic)
     float newSprite1Weight = 1f;
@@ -129,7 +168,19 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     float newSprite4Weight = 2f;
 
     // Call the original UpdateWeights method with these values
-    UpdateWeights(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+    UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+}
+
+    public void reRollP2()
+{
+    // Define new weights (can be hardcoded or dynamic)
+    float newSprite1Weight = 1f;
+    float newSprite2Weight = 3f;
+    float newSprite3Weight = 5f;
+    float newSprite4Weight = 2f;
+
+    // Call the original UpdateWeights method with these values
+    UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
 }
 
 }
