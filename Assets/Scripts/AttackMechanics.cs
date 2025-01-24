@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AttackMechanics : MonoBehaviour
 {
-    private UnitStats unitStats;         // Reference to the unit's stats
+    private UnitBaseStats UnitBaseStats;         // Reference to the unit's stats
     private float nextAttackTime = 0f;   // Time tracker for attack cooldown
     private Transform targetEnemy;       // Current target within range
     private string enemyTag;             // Tag of the opposing team
@@ -10,16 +10,16 @@ public class AttackMechanics : MonoBehaviour
     void Start()
     {
         // Retrieve the UnitStats component attached to this GameObject
-        unitStats = GetComponent<UnitStats>();
+        UnitBaseStats = GetComponent<UnitBaseStats>();
 
-        if (unitStats == null)
+        if (UnitBaseStats == null)
         {
             Debug.LogError("UnitStats component is missing on " + gameObject.name);
             return;
         }
 
         // Determine the enemy's tag based on this unit's team
-        enemyTag = unitStats.team == "team 1" ? "team 2" : "team 1";
+        enemyTag = UnitBaseStats.team == "team 1" ? "team 2" : "team 1";
     }
 
     void Update()
@@ -28,10 +28,10 @@ public class AttackMechanics : MonoBehaviour
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
-            if (distance <= unitStats.range && Time.time >= nextAttackTime)
+            if (distance <= UnitBaseStats.range && Time.time >= nextAttackTime)
             {
                 Attack();
-                nextAttackTime = Time.time + unitStats.attackSpeed; // Attack cooldown
+                nextAttackTime = Time.time + UnitBaseStats.attackSpeed; // Attack cooldown
             }
         }
     }
@@ -39,13 +39,13 @@ public class AttackMechanics : MonoBehaviour
     private void Attack()
     {
         // Access the enemy's UnitStats and apply damage
-        UnitStats enemyStats = targetEnemy.GetComponent<UnitStats>();
+        UnitBaseStats enemyStats = targetEnemy.GetComponent<UnitBaseStats>();
         if (enemyStats != null)
         {
-            enemyStats.TakeDamage(unitStats.damage);
+            enemyStats.TakeDamage(UnitBaseStats.damage);
 
             // Debug message for damage dealt
-            Debug.Log($"{gameObject.name} attacked {targetEnemy.name} for {unitStats.damage} damage!");
+            Debug.Log($"{gameObject.name} attacked {targetEnemy.name} for {UnitBaseStats.damage} damage!");
         }
     }
 
@@ -70,10 +70,10 @@ public class AttackMechanics : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         // Visualize the attack range in the editor
-        if (unitStats != null)
+        if (UnitBaseStats != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, unitStats.range);
+            Gizmos.DrawWireSphere(transform.position, UnitBaseStats.range);
         }
     }
 }
