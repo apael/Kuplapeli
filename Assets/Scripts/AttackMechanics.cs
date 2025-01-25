@@ -4,7 +4,7 @@ public class AttackMechanics : MonoBehaviour
 {
     private UnitBaseStats BaseStats;         // Reference to the unit's stats
     private float nextAttackTime = 0f;      // Time tracker for attack cooldown
-    public Transform targetEnemy;          // Current target within range
+    private Transform targetEnemy;          // Current target within range
 
     private SpriteSheetAnimator move;
 
@@ -13,6 +13,7 @@ public class AttackMechanics : MonoBehaviour
         // Retrieve the UnitStats component attached to this GameObject
         BaseStats = GetComponent<UnitBaseStats>();
         move = GetComponent<SpriteSheetAnimator>();
+
 
         if (BaseStats == null)
         {
@@ -25,18 +26,13 @@ public class AttackMechanics : MonoBehaviour
     }
 
     void Update()
-{
-    // If there's a target and it's within range, attempt to attack
-    if (targetEnemy != null)
     {
-
         // If there's a target and it's within range, attack
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
-            if (distance <= BaseStats.range && Time.time >= nextAttackTime)
+            if (distance <= (BaseStats.range) && Time.time >= nextAttackTime)
             {
-                move.StopMovement();
                 Attack();
                 nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
             }
@@ -48,7 +44,6 @@ public class AttackMechanics : MonoBehaviour
 
         }
     }
-}
 
     private void Attack()
     {
@@ -73,17 +68,42 @@ public class AttackMechanics : MonoBehaviour
         if (!collisionStats.team.Equals(BaseStats.team))
         {
             targetEnemy = collision.transform; // Set it as the target
+            float distance = Vector2.Distance(transform.position, targetEnemy.position);
+
+            if (distance <= (BaseStats.range))
+            {
+                move.targetEnemy = collision.transform;
+                move.StopMovement();
+            }
             Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
-        if (!collisionStats.team.Equals(BaseStats.team))
+        move.ContinueMovement();
+        LookForNewEnemiesInRange();
+    }
+
+
+
+    private void LookForNewEnemiesInRange()
+    {
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
+        foreach (Collider2D enemy in enemiesInRange)
         {
-            Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
-            targetEnemy = null;
+            // Check if the enemy has a UnitBaseStats component
+            UnitBaseStats enemyStats = enemy.GetComponent<UnitBaseStats>();
+
+            // Ensure enemyStats is not null and the enemy is on a different team
+            if (enemyStats != null && !enemyStats.team.Equals(BaseStats.team))
+            {
+                // If a new enemy is found, set it as the target
+                targetEnemy = enemyStats.transform;
+                move.targetEnemy = enemyStats.transform;
+                Debug.Log($"{gameObject.name} found new enemy: {enemyStats.gameObject.name}");
+                break; // Optionally, break if you just need the first enemy
+            }
         }
     }
 

@@ -17,6 +17,7 @@ public class UnitBaseStats : MonoBehaviour
     {
         // Initialize the unit's health
         currentHealth = maxHealth;
+        moneyMaker = FindFirstObjectByType<MoneyManager>();
 
         Debug.Log($"{gameObject.name} initialized with max health: {maxHealth}");
     Debug.Log($"{gameObject.name} initialized with max range: {range}");
