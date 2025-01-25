@@ -11,7 +11,8 @@ public class MoneyManager : MonoBehaviour
     public TextMeshProUGUI moneyTextP2;
     public float IncomeP1;
     public float IncomeP2;
-    private float updateTimer = 5;
+    private float updateTimer = 0f;
+    private float updateCooldown = 5f;
 
     // Start is called before the first frame update
     void Start()
