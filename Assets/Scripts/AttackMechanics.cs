@@ -22,6 +22,9 @@ public class AttackMechanics : MonoBehaviour
     }
 
     void Update()
+{
+    // If there's a target and it's within range, attempt to attack
+    if (targetEnemy != null)
     {
 
         // If there's a target and it's within range, attack
@@ -37,6 +40,7 @@ public class AttackMechanics : MonoBehaviour
 
         }
     }
+}
 
     private void Attack()
     {
