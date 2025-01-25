@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UnitBaseStats : MonoBehaviour
 {
-    public string team = "1";           // Team name ("team 1" or "team 2")
+    public string team;           // Team name ("team 1" or "team 2")
     public float range = 3f;      // Attack range
     public int damage = 10;       // Attack damage
     public float attackSpeed = 1f; // Time between attacks

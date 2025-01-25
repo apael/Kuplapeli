@@ -4,12 +4,15 @@ public class AttackMechanics : MonoBehaviour
 {
     private UnitBaseStats BaseStats;         // Reference to the unit's stats
     private float nextAttackTime = 0f;      // Time tracker for attack cooldown
-    private Transform targetEnemy;          // Current target within range
+    public Transform targetEnemy;          // Current target within range
+
+    private SpriteSheetAnimator move;
 
     void Start()
     {
         // Retrieve the UnitStats component attached to this GameObject
         BaseStats = GetComponent<UnitBaseStats>();
+        move = GetComponent<SpriteSheetAnimator>();
 
         if (BaseStats == null)
         {
@@ -23,15 +26,23 @@ public class AttackMechanics : MonoBehaviour
 
     void Update()
     {
+
         // If there's a target and it's within range, attack
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
             if (distance <= BaseStats.range && Time.time >= nextAttackTime)
             {
+                move.StopMovement();
                 Attack();
                 nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
             }
+
+        }
+        else
+        {
+            move.ContinueMovement();
+
         }
     }
 
@@ -42,7 +53,8 @@ public class AttackMechanics : MonoBehaviour
         if (enemyStats != null)
         {
             enemyStats.TakeDamage(BaseStats.damage);
-            Debug.Log($"{gameObject.name} attacked {targetEnemy.name} for {BaseStats.damage} damage!");
+            Debug.Log($"{gameObject?.name} attacked {targetEnemy?.name} for {BaseStats?.damage} damage!");
+
         }
         else
         {
@@ -52,8 +64,9 @@ public class AttackMechanics : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
         // Check if the object entering range is from the opposite team (not the same team)
-        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
+        if (!collisionStats.team.Equals(BaseStats.team))
         {
             targetEnemy = collision.transform; // Set it as the target
             Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
@@ -62,8 +75,8 @@ public class AttackMechanics : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // Clear the target if the enemy leaves the range
-        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
+        UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
+        if (!collisionStats.team.Equals(BaseStats.team))
         {
             Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
             targetEnemy = null;
