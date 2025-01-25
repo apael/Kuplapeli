@@ -34,6 +34,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     private float updateCooldown = 0.3f; // Time in seconds between updates
     private float updateTimer = 0f;
+    private int rollCount = 0;
 
     // Castles
     public GameObject CastleP1;
@@ -77,8 +78,9 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
                 float side1WinProbability = CalculateSideWinProbability();
 
-                if (side1WinProbability > winProbabilityThreshold)
+                if (side1WinProbability > winProbabilityThreshold && rollCount < 20)
                 {
+                    rollCount++;
                     UpdateWeightsP2(Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f));
                 }
                 else
@@ -93,6 +95,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
                     bool hasMoney = money.SpendMoneyP2(10f);
                     if (hasMoney)
                     {
+                        money.increaseIncomeP2(1f);
                         CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
                     }
                 }
@@ -198,6 +201,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         sprite3WeightP1 = sp3;
         sprite4WeightP1 = sp4;
         UpdateWeightsTextP1();
+        rollCount = 0;
 
     }
 

@@ -9,6 +9,9 @@ public class MoneyManager : MonoBehaviour
 
     public TextMeshProUGUI moneyTextP1;
     public TextMeshProUGUI moneyTextP2;
+    public float IncomeP1;
+    public float IncomeP2;
+    private float updateTimer = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +19,21 @@ public class MoneyManager : MonoBehaviour
         p1Money = 100f;
         p2Money = 100f;
         UpdateMoneyDisplay(); // Display the initial money value
+        IncomeP2 = 0;
+        IncomeP1 = 0;
+    }
+
+
+    void Update()
+    {
+        updateTimer += Time.deltaTime; // Increment the timer
+        if (updateTimer >= updateCooldown) // Check if enough time has passed
+        {
+            updateTimer = 0f; // Reset the timer
+            SpendMoneyP2(-IncomeP2);
+            SpendMoneyP1(-IncomeP1);
+        }
+
     }
 
     // Method to reduce money when the button is clicked
@@ -25,6 +43,7 @@ public class MoneyManager : MonoBehaviour
         {
             p1Money -= amount;  // Reduce the money by the specified amount
             UpdateMoneyDisplay();  // Update the displayed money
+            IncomeP1 += 1;
             return true;
 
         }
@@ -40,6 +59,7 @@ public class MoneyManager : MonoBehaviour
         {
             p2Money -= amount;  // Reduce the money by the specified amount
             UpdateMoneyDisplay();  // Update the displayed money
+            IncomeP2 += 1;
             return true;
         }
         else
@@ -60,6 +80,11 @@ public class MoneyManager : MonoBehaviour
     {
         float amountToReduce = 10f;  // Specify the amount to reduce
         SpendMoneyP2(amountToReduce);  // Call SpendMoney with this amount
+    }
+    
+    public void increaseIncomeP2(float amount)
+    {
+        IncomeP2 += amount;
     }
 
     // Update the UI TextMeshPro with the current money

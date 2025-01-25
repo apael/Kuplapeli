@@ -136,7 +136,7 @@ public class UnitBaseStats : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} died! Unit value: {unitValue}");
+     /*   Debug.Log($"{gameObject.name} died! Unit value: {unitValue}");
         if (team.Equals("1"))
         {
             moneyMaker.SpendMoneyP2(-unitValue);
@@ -144,7 +144,7 @@ public class UnitBaseStats : MonoBehaviour
         else
         {
             moneyMaker.SpendMoneyP1(-unitValue);
-        }
+        }*/
         Destroy(gameObject); // Remove the unit from the scene
 
     }
