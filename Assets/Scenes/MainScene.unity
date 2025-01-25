@@ -1753,6 +1753,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyTextP1: {fileID: 1682083515}
   moneyTextP2: {fileID: 160856016}
+  IncomeP1: 0
+  IncomeP2: 0
 --- !u!114 &327618485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1790,8 +1792,10 @@ MonoBehaviour:
   CastleP1: {fileID: 1889777629}
   CastleP2: {fileID: 1872190671}
   winProbabilityThreshold: 0.5
-  aiOn: 1
+  aiOn: 0
   aiCastle: {fileID: 1872190671}
+  purchaseP1Text: {fileID: 1760708318}
+  purchaseP2Text: {fileID: 1277613624}
 --- !u!114 &327618486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4892,7 +4896,7 @@ GameObject:
   - component: {fileID: 1277613625}
   - component: {fileID: 1277613624}
   m_Layer: 5
-  m_Name: PurchaseP1
+  m_Name: PurchaseP2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6824,7 +6828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ff7ffce608704791b5d1c80b9457f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 100
   currentHealth: 0
   hpBar: {fileID: 735575317}
   gameManager: {fileID: 0}
@@ -6917,7 +6921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ff7ffce608704791b5d1c80b9457f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 100
   currentHealth: 0
   hpBar: {fileID: 428954380}
   gameManager: {fileID: 0}

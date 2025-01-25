@@ -12,7 +12,7 @@ public class MoneyManager : MonoBehaviour
     public float IncomeP1;
     public float IncomeP2;
     private float updateTimer = 0f;
-    private float updateCooldown = 5f;
+    private float updateCooldown = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -37,14 +37,19 @@ public class MoneyManager : MonoBehaviour
 
     }
 
+
+
     // Method to reduce money when the button is clicked
     public bool SpendMoneyP1(float amount)
     {
         if (p1Money >= amount)
         {
+            if (amount > 0)
+            {
+                increaseIncomeP1(1);
+            }
             p1Money -= amount;  // Reduce the money by the specified amount
             UpdateMoneyDisplay();  // Update the displayed money
-            IncomeP1 += 1;
             return true;
 
         }
@@ -58,9 +63,12 @@ public class MoneyManager : MonoBehaviour
     {
         if (p2Money >= amount)
         {
-            p2Money -= amount;  // Reduce the money by the specified amount
-            UpdateMoneyDisplay();  // Update the displayed money
-            IncomeP2 += 1;
+            if (amount > 0)
+            {
+                increaseIncomeP2(1);
+            }
+            p2Money -= amount;  
+            UpdateMoneyDisplay();
             return true;
         }
         else
@@ -82,17 +90,21 @@ public class MoneyManager : MonoBehaviour
         float amountToReduce = 10f;  // Specify the amount to reduce
         SpendMoneyP2(amountToReduce);  // Call SpendMoney with this amount
     }
-    
+
     public void increaseIncomeP2(float amount)
     {
         IncomeP2 += amount;
+    }
+    public void increaseIncomeP1(float amount)
+    {
+        IncomeP1 += amount;
     }
 
     // Update the UI TextMeshPro with the current money
     void UpdateMoneyDisplay()
     {
 
-        moneyTextP1.text = "Money: " + p1Money.ToString("F2");  // Display money with 2 decimal places
-        moneyTextP2.text = "Money: " + p2Money.ToString("F2");  // Display money with 2 decimal places
+        moneyTextP1.text = "Money: " + p1Money.ToString("F2") + "/ " + IncomeP1.ToString("F1");  // Display money with 2 decimal places
+        moneyTextP2.text = "Money: " + p2Money.ToString("F2") + "/ " + IncomeP2.ToString("F1");  // Display money with 2 decimal places
     }
 }

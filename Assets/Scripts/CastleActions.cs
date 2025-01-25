@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WeightedSpriteCreatorAndMover : MonoBehaviour
+public class SpriteCreator : MonoBehaviour
 {
     private Coroutine moveCoroutine;
     // The Canvas where the sprite will be placed (if it's a UI element)
@@ -46,7 +46,11 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public bool aiOn;
     public GameObject aiCastle;
-    private bool giftGiven = false;
+    private int unitCountP1 = 0;
+    private int unitCountP2 = 0;
+    private float growthRate = 1.15f;
+    public TextMeshProUGUI purchaseP1Text;
+    public TextMeshProUGUI purchaseP2Text;
 
     private void Start()
     {
@@ -61,6 +65,8 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
             new UnitBaseStats.Guardian(),
             new UnitBaseStats.Thief()
         };
+        purchaseP1Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP1)):F1})";
+        purchaseP2Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP2)):F1})";
 
 
     }
@@ -70,11 +76,11 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
         if (aiOn)
         {
-            updateTimer += Time.deltaTime; // Increment the timer
+            updateTimer += Time.deltaTime;
 
-            if (updateTimer >= updateCooldown) // Check if enough time has passed
+            if (updateTimer >= updateCooldown)
             {
-                updateTimer = 0f; // Reset the timer
+                updateTimer = 0f;
 
                 float side1WinProbability = CalculateSideWinProbability();
 
@@ -85,55 +91,76 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
                 }
                 else
                 {
-                    CastleStats castleStats = aiCastle.GetComponent<CastleStats>();
-                    if (castleStats?.currentHealth < castleStats?.maxHealth / 2 && !giftGiven)
-                    {
-                        giftGiven = true;
-                        money.SpendMoneyP2(-300f);
-                    }
-
-                    bool hasMoney = money.SpendMoneyP2(10f);
-                    if (hasMoney)
-                    {
-                        money.increaseIncomeP2(1f);
-                        CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
-                    }
+                    sendUnitP2();
                 }
             }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                sendUnitP2();
+            }
+            else if (Input.GetKeyDown(KeyCode.L))
+            {
+                reRollP2();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            sendUnitP1();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            reRollP1();
+        }
+    }
+
+
+    public int modifyCountP1(int amount)
+    {
+        unitCountP1 += amount;
+        purchaseP1Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP1)):F1})";
+        return unitCountP1;
+    }
+    public int modifyCountP2(int amount)
+    {
+        unitCountP2 += amount;
+        purchaseP2Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP2)):F1})";
+        return unitCountP2;
     }
 
 
 
     public void sendUnitP1()
     {
-        bool hasMoney = money.SpendMoneyP1(10f);
+        bool hasMoney = money.SpendMoneyP1(10f * Mathf.Pow(growthRate, unitCountP1));
         if (hasMoney)
         {
+            modifyCountP1(1);
             CreateAndMoveRandomSprite(CastleP1, CastleP2, sprite1WeightP1, sprite2WeightP1, sprite3WeightP1, sprite4WeightP1, predefinedObjectsP1, "1", "Team 1");
         }
     }
 
+
     public void sendUnitP2()
     {
-        bool hasMoney = money.SpendMoneyP2(10f);
+        bool hasMoney = money.SpendMoneyP2(10f * Mathf.Pow(growthRate, unitCountP2));
         if (hasMoney)
         {
+            modifyCountP2(1);
             CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
         }
     }
     // This method will be called by the button OnClick to create a random sprite and move it
     public void CreateAndMoveRandomSprite(GameObject ownCastle, GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, string team, string tag)
     {
-        // Weights array for weighted random selection
         float[] weights = { sp1, sp2, sp3, sp4 };
 
         // Choose a random index based on weights
         int randomIndex = GetRandomIndexByWeight(weights);
-        Debug.Log($"Selected index: {randomIndex}");
-        GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
 
-        // Optional: Set the name for clarity in the hierarchy
+        GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
         spriteObject.name = "RandomSprite_" + randomIndex;
 
         UnitBaseStats baseStats = spriteObject.GetComponent<UnitBaseStats>();
@@ -163,8 +190,6 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
         SpriteSheetAnimator controller = spriteObject.GetComponent<SpriteSheetAnimator>();
 
-
-        // Start moving the sprite towards the target
         if (controller != null)
         {
             controller.StartMovingSprite(spriteObject, enemyCastle, baseStats.speed);
@@ -173,23 +198,22 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
 
 
-    // Helper method to select a random index based on the weights
     private int GetRandomIndexByWeight(float[] weights)
     {
-        if (weights == null || weights.Length == 0) return -1; // Validate input
+        if (weights == null || weights.Length == 0) return -1;
 
         float totalWeight = 0f;
-        foreach (float weight in weights) totalWeight += Mathf.Max(0, weight); // Ignore negatives
+        foreach (float weight in weights) totalWeight += Mathf.Max(0, weight);
 
-        if (totalWeight <= 0f) return -1; // Ensure total weight is valid
+        if (totalWeight <= 0f) return -1;
 
         float randomValue = Random.Range(0f, totalWeight);
         for (int i = 0; i < weights.Length; i++)
         {
-            if ((randomValue -= weights[i]) < 0f) return i; // Return index when randomValue falls below 0
+            if ((randomValue -= weights[i]) < 0f) return i;
         }
 
-        return weights.Length - 1; // Fallback (shouldn't occur if weights are valid)
+        return weights.Length - 1;
     }
 
 
@@ -219,15 +243,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         bool hasMoney = money.SpendMoneyP1(0f);
         if (hasMoney)
         {
-
-            // Define new weights (can be hardcoded or dynamic)
-            float newSprite1Weight = Random.Range(1f, 10f);
-            float newSprite2Weight = Random.Range(1f, 10f);
-            float newSprite3Weight = Random.Range(1f, 10f);
-            float newSprite4Weight = Random.Range(1f, 10f);
-
-            // Call the original UpdateWeights method with these values
-            UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+            UpdateWeightsP1(Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f));
         }
     }
 
@@ -236,14 +252,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         bool hasMoney = money.SpendMoneyP2(0f);
         if (hasMoney)
         {
-            // Generate random weights between 1 and 10 for each sprite
-            float newSprite1Weight = Random.Range(1f, 10f);
-            float newSprite2Weight = Random.Range(1f, 10f);
-            float newSprite3Weight = Random.Range(1f, 10f);
-            float newSprite4Weight = Random.Range(1f, 10f);
-
-            // Call the UpdateWeightsP2 method with the new random values
-            UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+            UpdateWeightsP2(Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f));
         }
 
 
@@ -277,11 +286,10 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         float totalSide1Probability = 0f;
         float totalSide2Probability = 0f;
 
-        // Iterate over the units for both sides
         for (int i = 0; i < unitClasses.Length; i++)
         {
-            UnitBaseStats unitSide1 = unitClasses[i];  // Use the unit from the array
-            UnitBaseStats unitSide2 = unitClasses[i];  // Use the unit from the array
+            UnitBaseStats unitSide1 = unitClasses[i];
+            UnitBaseStats unitSide2 = unitClasses[i];
 
             // Calculate the win probability for the current unit type (side 1 vs side 2)
             float winProbability = UnitBaseStats.CalculateCombatOutcome(unitSide1, unitSide2);
@@ -295,7 +303,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         float totalProbability = totalSide1Probability + totalSide2Probability;
         float side1WinProbability = totalSide1Probability / totalProbability;
         float side2WinProbability = totalSide2Probability / totalProbability;
-        // Return the final probability (the winning side's probability)
+        // Return P1 probability
         return side1WinProbability;
     }
 }
