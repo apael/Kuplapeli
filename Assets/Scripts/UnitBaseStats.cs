@@ -17,11 +17,6 @@ public class UnitBaseStats : MonoBehaviour
     {
         currentHealth = maxHealth;
         moneyMaker = FindFirstObjectByType<MoneyManager>();
-    Debug.Log($"{gameObject.name} initialized with max health: {maxHealth}");
-    Debug.Log($"{gameObject.name} initialized with max range: {range}");
-    Debug.Log($"{gameObject.name} initialized with max damage: {damage}");
-    Debug.Log($"{gameObject.name} initialized with max attackSpeed: {attackSpeed}");
-    Debug.Log($"{gameObject.name} initialized with max unitValue: {unitValue}");
     }
 
     

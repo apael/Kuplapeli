@@ -11,13 +11,10 @@ public class SpriteSheetAnimator : MonoBehaviour
 
     private bool isStopped = false;
 
-    private Coroutine moveCoroutine;
+    private GameObject targetCastle;
 
-    // Assign the coroutine from the movement manager
-    public void SetMoveCoroutine(Coroutine coroutine)
-    {
-        moveCoroutine = coroutine;
-    }
+    public Transform targetEnemy;
+
 
     // Method to stop the movement
     public void StopMovement()
@@ -38,7 +35,6 @@ public class SpriteSheetAnimator : MonoBehaviour
     {
         StartCoroutine(AnimateSprite());
     }
-
     private IEnumerator MoveSpriteToTarget(GameObject sprite, GameObject enemyCastle, float speed)
     {
         if (sprite == null || enemyCastle == null)
@@ -48,47 +44,55 @@ public class SpriteSheetAnimator : MonoBehaviour
         }
 
         Vector3 startPosition = sprite.transform.position;
-        Vector3 targetPosition = enemyCastle.transform.position;
-        float totalDistance = Vector3.Distance(startPosition, targetPosition);
-        float traveledDistance = 0f; // Tracks how far the sprite has moved
-        Vector3 lastPosition = startPosition; // To handle pause/resume
-
-        while (traveledDistance < totalDistance -1f)
+        Vector3 targetPosition = enemyCastle.transform.position; // Default to enemyCastle
+        if (targetEnemy != null)  // If targetEnemy is available, move towards it
         {
+            targetPosition = targetEnemy.position;
+        }
 
-            if (isStopped)
+        float totalDistance = Vector3.Distance(startPosition, targetPosition); // Calculate total distance to the target
+        float traveledDistance = 0f; // Tracks how far the sprite has moved
+        Vector3 lastPosition = startPosition; // To track position updates for calculating traveled distance
+
+        while (sprite.transform.position != targetCastle.transform.position)
+        {
+            float moveStep = speed * 10 * Time.deltaTime; // Movement step per frame
+
+
+            if (targetEnemy != null)
             {
-                Debug.Log("Movement paused!");
-                yield return new WaitWhile(() => isStopped); // Wait until `isStopped` is false
-                Debug.Log("Movement resumed!");
+                moveStep = speed * Time.deltaTime;
+                targetPosition = targetEnemy.position;
+            }
+            else
+            {
+                targetPosition = targetCastle.transform.position;
             }
 
-            if (sprite == null || !sprite.activeInHierarchy)
-            {
-                Debug.LogWarning("Sprite destroyed or deactivated. Aborting movement.");
-                yield break;
-            }
-
-            // Calculate movement for this frame
-            float moveStep = speed * 10 * Time.deltaTime; // Adjust movement speed here if needed
+            // Move the sprite towards the target position
             sprite.transform.position = Vector3.MoveTowards(sprite.transform.position, targetPosition, moveStep);
 
-            // Update traveled distance
+            // Calculate the traveled distance
             traveledDistance += Vector3.Distance(lastPosition, sprite.transform.position);
             lastPosition = sprite.transform.position;
+            if (Vector3.Distance(sprite.transform.position, targetCastle.transform.position) < 10f)
+            {
+                break; // Exit loop when very close to the target
+            }
 
-            yield return null;
+            yield return null; // Wait until next frame
         }
-        sprite.transform.position = targetPosition;
+
         Destroy(sprite);
     }
 
 
 
+
     public void StartMovingSprite(GameObject sprite, GameObject enemyCastle, float duration = 10f)
     {
-        moveCoroutine = StartCoroutine(MoveSpriteToTarget(sprite, enemyCastle, duration));
-        SetMoveCoroutine(moveCoroutine);
+        targetCastle = enemyCastle;
+        StartCoroutine(MoveSpriteToTarget(sprite, enemyCastle, duration));
     }
 
 
