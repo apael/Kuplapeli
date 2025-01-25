@@ -33,15 +33,15 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public void sendUnitP1()
 {
-CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1,predefinedObjectsP1, 1, "Team 1");
+CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1,predefinedObjectsP1, "1", "Team 1");
 }
 
        public void sendUnitP2()
 {
-CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2,predefinedObjectsP2, 2, "Team 2");
+CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2,predefinedObjectsP2, "2", "Team 2");
 } 
     // This method will be called by the button OnClick to create a random sprite and move it
-    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, int team, string tag )
+    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, string team, string tag )
     {
         // Weights array for weighted random selection
         float[] weights = { sp1, sp2, sp3, sp4 };
