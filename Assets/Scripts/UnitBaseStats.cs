@@ -25,13 +25,6 @@ public class UnitBaseStats : MonoBehaviour
     Debug.Log($"{gameObject.name} initialized with max unitValue: {unitValue}");
     }
 
-        Debug.Log($"{gameObject.name} initialized with max health: {maxHealth}");
-        Debug.Log($"{gameObject.name} initialized with range: {range}");
-        Debug.Log($"{gameObject.name} initialized with damage: {damage}");
-        Debug.Log($"{gameObject.name} initialized with attack speed: {attackSpeed}");
-        Debug.Log($"{gameObject.name} initialized with unit value: {unitValue}");
-    }
-
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
