@@ -545,7 +545,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &175641952
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -647,6 +647,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 2048061185}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -1190,7 +1191,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &243815785
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1292,6 +1293,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 172502738}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -1788,6 +1790,8 @@ MonoBehaviour:
   CastleP1: {fileID: 1889777629}
   CastleP2: {fileID: 1872190671}
   winProbabilityThreshold: 0.5
+  aiOn: 1
+  aiCastle: {fileID: 1872190671}
 --- !u!114 &327618486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3555,7 +3559,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &859531554
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3657,6 +3661,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 275291523}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -3859,7 +3864,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &998141977
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3961,6 +3966,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 732390996}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -4370,6 +4376,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 335273975}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -4494,7 +4501,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1079344162
 GameObject:
   m_ObjectHideFlags: 0
@@ -4641,7 +4648,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1176991358
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4743,6 +4750,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 809683164}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -6151,7 +6159,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1767645743
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6253,6 +6261,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 734072376}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
@@ -6815,7 +6824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ff7ffce608704791b5d1c80b9457f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 1000
   currentHealth: 0
   hpBar: {fileID: 735575317}
   gameManager: {fileID: 0}
@@ -6908,7 +6917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ff7ffce608704791b5d1c80b9457f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 1000
   currentHealth: 0
   hpBar: {fileID: 428954380}
   gameManager: {fileID: 0}
@@ -6983,7 +6992,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &2005999997
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7085,6 +7094,7 @@ MonoBehaviour:
   maxHealth: 100
   unitValue: 10
   hpBar: {fileID: 1290645073}
+  speed: 0
   armorType: 0
   damageType: 0
   currentHealth: 0
