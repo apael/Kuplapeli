@@ -10,7 +10,7 @@ public class CastleStats : MonoBehaviour
     {
         currentHealth = maxHealth;
         hpBar.setMaxHealth(maxHealth);
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
         gameManager.HideGameOverPanel();
 
     }

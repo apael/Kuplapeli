@@ -7,7 +7,7 @@ public class UnitBaseStats : MonoBehaviour
     public int damage = 10;       // Attack damage
     public float attackSpeed = 0f; // Time between attacks
     public int maxHealth = 100;   // Maximum health
-    public float unitValue = 10;  // Value when this unit dies
+    public float unitValue;  // Value when this unit dies
     public HpBar hpBar; // Reference to the health bar object
     public enum ArmorType { Cloth, Heavy, Light }
     public enum DamageType { Magic, Normal, Pierce }

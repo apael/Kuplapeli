@@ -28,7 +28,7 @@ public class SpriteSheetAnimator : MonoBehaviour
     }
     private void Start()
     {
-        moneyMaker = FindObjectOfType<MoneyManager>();  // Assign the MoneyManager if it's not already assigned
+        moneyMaker = FindFirstObjectByType<MoneyManager>();  // Assign the MoneyManager if it's not already assigned
         // Automatically start animation when the GameObject is created
         PlayAnimation();
 
