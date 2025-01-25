@@ -16,6 +16,8 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     public TextMeshProUGUI weightsTextP1;
     public TextMeshProUGUI weightsTextP2;
 
+    public UnitBaseStats[] unitClasses;
+
     // Weights for each sprite (higher values mean higher chance of selection)
 
     //P1
@@ -42,6 +44,14 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         money = GetComponent<MoneyManager>();
         UpdateWeightsTextP2();
         UpdateWeightsTextP1();
+        unitClasses = new UnitBaseStats[]
+        {
+            new UnitBaseStats.Mage(),
+            new UnitBaseStats.Archer(),
+            new UnitBaseStats.Guardian(),
+            new UnitBaseStats.Thief()
+        };
+        float side1WinProbability = CalculateSideWinProbability();
 
     }
 
@@ -181,11 +191,9 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public void reRollP2()
     {
-        bool hasMoney = money.SpendMoneyP2(50f);
+        bool hasMoney = money.SpendMoneyP2(0f);
         if (hasMoney)
         {
-
-
             // Generate random weights between 1 and 10 for each sprite
             float newSprite1Weight = Random.Range(1f, 10f);
             float newSprite2Weight = Random.Range(1f, 10f);
@@ -208,14 +216,50 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
                            $"S3: {(sprite3WeightP1 / totalWeight * 100f):F1}%\n" +
                            $"S4: {(sprite4WeightP1 / totalWeight * 100f):F1}%";
     }
-
     private void UpdateWeightsTextP2()
     {
-        float totalWeight = sprite1WeightP1 + sprite2WeightP1 + sprite3WeightP1 + sprite4WeightP1;
+        float totalWeight = sprite1WeightP2 + sprite2WeightP2 + sprite3WeightP2 + sprite4WeightP2;
+        float side1WinProbability = CalculateSideWinProbability();
+
+
         weightsTextP2.text =
                              $"S1: {(sprite1WeightP2 / totalWeight * 100f):F1}%\n" +
                              $"S2: {(sprite2WeightP2 / totalWeight * 100f):F1}%\n" +
                              $"S3: {(sprite3WeightP2 / totalWeight * 100f):F1}%\n" +
                              $"S4: {(sprite4WeightP2 / totalWeight * 100f):F1}%";
+    }
+
+
+    public float CalculateSideWinProbability()
+    {
+        float[] unitWeightsSide1 = { sprite1WeightP1, sprite2WeightP1, sprite3WeightP1, sprite4WeightP1 };
+        float[] unitWeightsSide2 = { sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2 };
+        float totalSide1Probability = 0f;
+        float totalSide2Probability = 0f;
+
+        // Iterate over the units for both sides
+        for (int i = 0; i < unitClasses.Length; i++)
+        {
+            UnitBaseStats unitSide1 = unitClasses[i];  // Use the unit from the array
+            UnitBaseStats unitSide2 = unitClasses[i];  // Use the unit from the array
+
+            // Calculate the win probability for the current unit type (side 1 vs side 2)
+            float winProbability = UnitBaseStats.CalculateCombatOutcome(unitSide1, unitSide2);
+
+            // Apply the weights for each unit type on both sides
+            totalSide1Probability += winProbability * unitWeightsSide1[i];
+            totalSide2Probability += (1 - winProbability) * unitWeightsSide2[i];
+        }
+
+        // Normalize the probabilities so they sum to 1
+        float totalProbability = totalSide1Probability + totalSide2Probability;
+        float side1WinProbability = totalSide1Probability / totalProbability;
+        float side2WinProbability = totalSide2Probability / totalProbability;
+
+        Debug.Log($"Side 1 Win Probability: {side1WinProbability * 100}%");
+        Debug.Log($"Side 2 Win Probability: {side2WinProbability * 100}%");
+
+        // Return the final probability (the winning side's probability)
+        return side1WinProbability > side2WinProbability ? side1WinProbability : side2WinProbability;
     }
 }

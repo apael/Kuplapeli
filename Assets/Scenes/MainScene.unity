@@ -426,6 +426,11 @@ MonoBehaviour:
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 3
 --- !u!114 &175641955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,6 +995,11 @@ MonoBehaviour:
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 2
 --- !u!114 &243815788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,11 +2056,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 
-  range: 30
+  range: 100
   damage: 10
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 0
 --- !u!114 &859531557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2344,11 +2359,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 
-  range: 30
+  range: 150
   damage: 10
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 1
 --- !u!114 &998141980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2650,6 +2670,11 @@ MonoBehaviour:
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 3
 --- !u!114 &1054557011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2937,11 +2962,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 
-  range: 30
+  range: 100
   damage: 10
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 0
 --- !u!114 &1176991361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3871,6 +3901,11 @@ MonoBehaviour:
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 2
 --- !u!114 &1767645746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4465,11 +4500,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 
-  range: 30
+  range: 150
   damage: 10
   attackSpeed: 1
   maxHealth: 100
   unitValue: 50
+  healthBarObject: {fileID: 0}
+  armorType: 0
+  damageType: 0
+  currentHealth: 0
+  selectedClass: 1
 --- !u!114 &2006000000
 MonoBehaviour:
   m_ObjectHideFlags: 0

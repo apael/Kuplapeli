@@ -51,7 +51,7 @@ public class AttackMechanics : MonoBehaviour
         UnitBaseStats enemyStats = targetEnemy.GetComponent<UnitBaseStats>();
         if (enemyStats != null)
         {
-            enemyStats.TakeDamage(BaseStats.damage);
+            enemyStats.TakeDamage(BaseStats.damage, BaseStats.damageType);
             Debug.Log($"{gameObject?.name} attacked {targetEnemy?.name} for {BaseStats?.damage} damage!");
 
         }
