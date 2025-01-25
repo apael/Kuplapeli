@@ -1,15 +1,17 @@
 using UnityEngine;
 
-public class Unit1Stats : UnitBaseStats
+public class Unit1stats : UnitBaseStats
 {
-    void Start()
+    protected override void Start()
     {
-        // Set unique values for Unit 1
-        range = 2;
-        damage = 1;
+        // Customize stats for Unit 2
+        range = 1;
+        damage = 10;
         attackSpeed = 0.8f;
-        maxHealth = 120;
-        unitValue = 60;
+        maxHealth = 200;
+        unitValue = 30;
+
+        // Call the base class's Start method
+        base.Start();
     }
 }
-

@@ -11,19 +11,18 @@ public class UnitBaseStats : MonoBehaviour
 
     private MoneyManager moneyMaker;
 
-    private int currentHealth;
+    protected int currentHealth;     // Current health of the unit
 
-    void Start()
+    protected virtual void Start()
     {
+        // Initialize the unit's health
         currentHealth = maxHealth;
         moneyMaker = FindFirstObjectByType<MoneyManager>();
     }
 
-    
-
     public void TakeDamage(int damage)
     {
-        currentHealth = currentHealth - damage;
+        currentHealth -= damage;
         Debug.Log($"{gameObject.name} took {damage} damage! Current health: {currentHealth}");
 
         if (currentHealth <= 0)
@@ -47,4 +46,3 @@ public class UnitBaseStats : MonoBehaviour
 
     }
 }
-
