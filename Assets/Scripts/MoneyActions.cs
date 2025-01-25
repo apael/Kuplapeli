@@ -104,7 +104,7 @@ public class MoneyManager : MonoBehaviour
     void UpdateMoneyDisplay()
     {
 
-        moneyTextP1.text = "Money: " + p1Money.ToString("F2") + "/ " + IncomeP1.ToString("F1");  // Display money with 2 decimal places
-        moneyTextP2.text = "Money: " + p2Money.ToString("F2") + "/ " + IncomeP2.ToString("F1");  // Display money with 2 decimal places
+        moneyTextP1.text = p1Money.ToString("F2") + "/ " + IncomeP1.ToString("F0");
+        moneyTextP2.text = p2Money.ToString("F2") + "/ " + IncomeP2.ToString("F0");
     }
 }

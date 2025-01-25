@@ -262,20 +262,20 @@ public class SpriteCreator : MonoBehaviour
     {
         float totalWeight = sprite1WeightP1 + sprite2WeightP1 + sprite3WeightP1 + sprite4WeightP1;
         weightsTextP1.text =
-                           $"Thief: {(sprite1WeightP1 / totalWeight * 100f):F1}%\n" +
-                           $"Guardian: {(sprite2WeightP1 / totalWeight * 100f):F1}%\n" +
-                           $"Mage: {(sprite3WeightP1 / totalWeight * 100f):F1}%\n" +
-                           $"Archer: {(sprite4WeightP1 / totalWeight * 100f):F1}%";
+                           $"{(sprite1WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"{(sprite2WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"{(sprite3WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"{(sprite4WeightP1 / totalWeight * 100f):F1}%";
     }
     private void UpdateWeightsTextP2()
     {
         float totalWeight = sprite1WeightP2 + sprite2WeightP2 + sprite3WeightP2 + sprite4WeightP2;
 
         weightsTextP2.text =
-                             $"Thief: {(sprite1WeightP2 / totalWeight * 100f):F1}%\n" +
-                             $"Guardian: {(sprite2WeightP2 / totalWeight * 100f):F1}%\n" +
-                             $"Mage: {(sprite3WeightP2 / totalWeight * 100f):F1}%\n" +
-                             $"Archer: {(sprite4WeightP2 / totalWeight * 100f):F1}%";
+                             $"{(sprite1WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"{(sprite2WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"{(sprite3WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"{(sprite4WeightP2 / totalWeight * 100f):F1}%";
     }
 
 
