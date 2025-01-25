@@ -49,7 +49,7 @@ public class SpriteSheetAnimator : MonoBehaviour
 
         while (sprite.transform.position != targetCastle.transform.position)
         {
-            float moveStep = speed * 10 * Time.deltaTime; // Movement step per frame
+            float moveStep = speed * Time.deltaTime; // Movement step per frame
             if (isStopped)
             {
                 yield return new WaitWhile(() => isStopped); // Wait until `isStopped` is false
@@ -57,7 +57,7 @@ public class SpriteSheetAnimator : MonoBehaviour
 
             if (targetEnemy != null)
             {
-                moveStep = speed * Time.deltaTime;
+                moveStep = speed / 3 * Time.deltaTime;
                 targetPosition = targetEnemy.position;
             }
             else
