@@ -34,7 +34,6 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     private float updateCooldown = 0.3f; // Time in seconds between updates
     private float updateTimer = 0f;
-    private int rollCount = 0;
 
     // Castles
     public GameObject CastleP1;
@@ -48,8 +47,11 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     public GameObject aiCastle;
     private bool giftGiven = false;
 
+    public bool loadedToggleState;
     private void Start()
     {
+        loadedToggleState = PlayerPrefs.GetInt("ToggleState", 0) == 1;
+        Debug.Log("Loaded Toggle State: " + loadedToggleState);
         // Automatically start animation when the GameObject is created
         money = GetComponent<MoneyManager>();
         UpdateWeightsTextP2();
@@ -61,14 +63,14 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
             new UnitBaseStats.Guardian(),
             new UnitBaseStats.Thief()
         };
-
-
+        aiOn = loadedToggleState;
+        Debug.Log(loadedToggleState);
     }
 
     void Update()
     {
 
-        if (aiOn)
+        if (aiOn == true)
         {
             updateTimer += Time.deltaTime; // Increment the timer
 
@@ -78,9 +80,8 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
                 float side1WinProbability = CalculateSideWinProbability();
 
-                if (side1WinProbability > winProbabilityThreshold && rollCount < 20)
+                if (side1WinProbability > winProbabilityThreshold)
                 {
-                    rollCount++;
                     UpdateWeightsP2(Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f));
                 }
                 else
@@ -95,7 +96,6 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
                     bool hasMoney = money.SpendMoneyP2(10f);
                     if (hasMoney)
                     {
-                        money.increaseIncomeP2(1f);
                         CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
                     }
                 }
@@ -201,7 +201,6 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         sprite3WeightP1 = sp3;
         sprite4WeightP1 = sp4;
         UpdateWeightsTextP1();
-        rollCount = 0;
 
     }
 

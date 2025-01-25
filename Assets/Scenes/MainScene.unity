@@ -652,6 +652,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 3
+  fadeDuration: 2
 --- !u!114 &175641955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1298,6 +1299,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 2
+  fadeDuration: 2
 --- !u!114 &243815788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,6 +1755,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyTextP1: {fileID: 1682083515}
   moneyTextP2: {fileID: 160856016}
+  IncomeP1: 0
+  IncomeP2: 0
 --- !u!114 &327618485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,6 +1796,7 @@ MonoBehaviour:
   winProbabilityThreshold: 0.5
   aiOn: 1
   aiCastle: {fileID: 1872190671}
+  loadedToggleState: 0
 --- !u!114 &327618486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3666,6 +3671,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 0
+  fadeDuration: 2
 --- !u!114 &859531557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3971,6 +3977,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 1
+  fadeDuration: 2
 --- !u!114 &998141980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4381,6 +4388,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 3
+  fadeDuration: 2
 --- !u!114 &1054557011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4755,6 +4763,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 0
+  fadeDuration: 2
 --- !u!114 &1176991361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6266,6 +6275,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 2
+  fadeDuration: 2
 --- !u!114 &1767645746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7099,6 +7109,7 @@ MonoBehaviour:
   damageType: 0
   currentHealth: 0
   selectedClass: 1
+  fadeDuration: 2
 --- !u!114 &2006000000
 MonoBehaviour:
   m_ObjectHideFlags: 0
