@@ -38,6 +38,8 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     private MoneyManager money;
 
+    public float winProbabilityThreshold = 0.5f; // Threshold for deciding re-roll
+
     private void Start()
     {
         // Automatically start animation when the GameObject is created
@@ -51,8 +53,32 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
             new UnitBaseStats.Guardian(),
             new UnitBaseStats.Thief()
         };
+
+
+    }
+
+    void Update()
+    {
         float side1WinProbability = CalculateSideWinProbability();
 
+        if (side1WinProbability > winProbabilityThreshold)
+        {
+            float newSprite1Weight = Random.Range(1f, 10f);
+            float newSprite2Weight = Random.Range(1f, 10f);
+            float newSprite3Weight = Random.Range(1f, 10f);
+            float newSprite4Weight = Random.Range(1f, 10f);
+
+            // Call the UpdateWeightsP2 method with the new random values
+            UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+        }
+        else
+        {
+            bool hasMoney = money.SpendMoneyP2(10f);
+            if (hasMoney)
+            {
+                CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+            }
+        }
     }
 
 
@@ -174,7 +200,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public void reRollP1()
     {
-        bool hasMoney = money.SpendMoneyP1(50f);
+        bool hasMoney = money.SpendMoneyP1(0f);
         if (hasMoney)
         {
 
@@ -219,8 +245,6 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     private void UpdateWeightsTextP2()
     {
         float totalWeight = sprite1WeightP2 + sprite2WeightP2 + sprite3WeightP2 + sprite4WeightP2;
-        float side1WinProbability = CalculateSideWinProbability();
-
 
         weightsTextP2.text =
                              $"S1: {(sprite1WeightP2 / totalWeight * 100f):F1}%\n" +
@@ -255,11 +279,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         float totalProbability = totalSide1Probability + totalSide2Probability;
         float side1WinProbability = totalSide1Probability / totalProbability;
         float side2WinProbability = totalSide2Probability / totalProbability;
-
-        Debug.Log($"Side 1 Win Probability: {side1WinProbability * 100}%");
-        Debug.Log($"Side 2 Win Probability: {side2WinProbability * 100}%");
-
         // Return the final probability (the winning side's probability)
-        return side1WinProbability > side2WinProbability ? side1WinProbability : side2WinProbability;
+        return side1WinProbability;
     }
 }

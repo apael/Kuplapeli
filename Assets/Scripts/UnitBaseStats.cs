@@ -35,6 +35,7 @@ public class UnitBaseStats : MonoBehaviour
                 range = 100f;
                 armorType = ArmorType.Cloth;
                 damageType = DamageType.Magic;
+                unitValue = 10f;
                 break;
             case UnitClass.Archer:
                 damage = 15;
@@ -43,6 +44,7 @@ public class UnitBaseStats : MonoBehaviour
                 range = 150f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
+                unitValue = 10f;
                 break;
             case UnitClass.Guardian:
                 damage = 10;
@@ -51,6 +53,7 @@ public class UnitBaseStats : MonoBehaviour
                 range = 40f;
                 armorType = ArmorType.Heavy;
                 damageType = DamageType.Normal;
+                unitValue = 10f;
                 break;
             case UnitClass.Thief:
                 damage = 18;
@@ -59,6 +62,7 @@ public class UnitBaseStats : MonoBehaviour
                 range = 50f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
+                unitValue = 10f;
                 break;
         }
 
@@ -69,8 +73,9 @@ public class UnitBaseStats : MonoBehaviour
     {
 
         // Initialize the unit's health
-        currentHealth = maxHealth;
         moneyMaker = FindFirstObjectByType<MoneyManager>();
+        SetUnitClass(selectedClass);
+        currentHealth = maxHealth;
         hpBar.setMaxHealth(maxHealth);
 
     }

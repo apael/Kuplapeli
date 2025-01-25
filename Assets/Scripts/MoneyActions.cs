@@ -13,6 +13,8 @@ public class MoneyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        p1Money = 100f;
+        p2Money = 100f;
         UpdateMoneyDisplay(); // Display the initial money value
     }
 
