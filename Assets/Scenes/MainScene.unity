@@ -1035,6 +1035,7 @@ GameObject:
   - component: {fileID: 1054557010}
   - component: {fileID: 1054557013}
   - component: {fileID: 1054557012}
+  - component: {fileID: 1054557014}
   m_Layer: 0
   m_Name: mele_p2
   m_TagString: Untagged
@@ -1058,8 +1059,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -973, y: -99}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -1000.9005, y: -124.26839}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1054557006
 MonoBehaviour:
@@ -1185,8 +1186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc80c75d3790614baef8efb822612d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 1
-  range: 3
+  team: 
+  range: 50
   damage: 10
   attackSpeed: 1
   maxHealth: 100
@@ -1203,6 +1204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087347987559d3941833808f4061ecd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetEnemy: {fileID: 0}
 --- !u!61 &1054557012
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1247,7 +1249,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.23, y: 0.22}
+  m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
 --- !u!58 &1054557013
 CircleCollider2D:
@@ -1285,6 +1287,33 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.115
+--- !u!50 &1054557014
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054557004}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 2
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &1277613622
 GameObject:
   m_ObjectHideFlags: 0

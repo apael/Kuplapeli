@@ -3,17 +3,20 @@ using UnityEngine;
 public class UnitBaseStats : MonoBehaviour
 {
     public string team;           // Team name ("team 1" or "team 2")
-    public float range = 3f;      // Attack range
+    public float range = 50f;      // Attack range
     public int damage = 10;       // Attack damage
     public float attackSpeed = 1f; // Time between attacks
     public int maxHealth = 100;   // Maximum health
-    public int unitValue = 50;    // Value when this unit dies
+    public float unitValue = 50;    // Value when this unit dies
+
+    private MoneyManager moneyMaker;
 
     private int currentHealth;
 
     void Start()
     {
         currentHealth = maxHealth;
+        moneyMaker = FindFirstObjectByType<MoneyManager>();
     }
 
     public void TakeDamage(int damage)
@@ -30,6 +33,15 @@ public class UnitBaseStats : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{gameObject.name} died! Unit value: {unitValue}");
+        if (team.Equals("1"))
+        {
+            moneyMaker.SpendMoneyP2(-unitValue);
+        }
+        else
+        {
+            moneyMaker.SpendMoneyP1(-unitValue);
+        }
         Destroy(gameObject); // Remove the unit from the scene
+
     }
 }
