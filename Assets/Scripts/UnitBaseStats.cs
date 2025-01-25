@@ -18,6 +18,7 @@ public class UnitBaseStats : MonoBehaviour
     public DamageType damageType;
 
     private MoneyManager moneyMaker;
+    private SpriteCreator spriteCreator;
 
     public int currentHealth;     // Current health of the unit
     public UnitClass selectedClass;
@@ -82,6 +83,7 @@ public class UnitBaseStats : MonoBehaviour
 
         // Initialize the unit's health
         moneyMaker = FindFirstObjectByType<MoneyManager>();
+        spriteCreator =  FindFirstObjectByType<SpriteCreator>();
         SetUnitClass(selectedClass);
         currentHealth = maxHealth;
         hpBar.setMaxHealth(maxHealth);
@@ -96,27 +98,27 @@ public class UnitBaseStats : MonoBehaviour
         {
             case DamageType.Magic:
                 if (armorType == ArmorType.Heavy)
-                    finalDamage *= 2f; // Magic > Heavy
+                    finalDamage *= 1.5f; // Magic > Heavy
                 else if (armorType == ArmorType.Light)
-                    finalDamage *= 0.3f; // Magic < Light
+                    finalDamage *= 0.5f; // Magic < Light
                 else if (armorType == ArmorType.Cloth)
                     finalDamage *= 0.75f; // Magic < Normal
                 break;
 
             case DamageType.Pierce:
                 if (armorType == ArmorType.Light)
-                    finalDamage *= 2f; // Pierce > Light
+                    finalDamage *= 1.5f; // Pierce > Light
                 else if (armorType == ArmorType.Heavy)
-                    finalDamage *= 0.3f; // Pierce < Heavy
+                    finalDamage *= 0.5f; // Pierce < Heavy
                 else if (armorType == ArmorType.Cloth)
                     finalDamage *= 0.75f; // Pierce < Cloth
                 break;
 
             case DamageType.Normal:
                 if (armorType == ArmorType.Cloth)
-                    finalDamage *= 2f; // Normal > Cloth
+                    finalDamage *= 1.5f; // Normal > Cloth
                 else if (armorType == ArmorType.Light)
-                    finalDamage *= 0.3f; // Normal < Light
+                    finalDamage *= 0.5f; // Normal < Light
                 else if (armorType == ArmorType.Heavy)
                     finalDamage *= 0.75f; // Normal < Heavy
                 break;
@@ -126,8 +128,6 @@ public class UnitBaseStats : MonoBehaviour
         currentHealth -= Mathf.RoundToInt(finalDamage);
         hpBar.setHealth(currentHealth);
 
-        Debug.Log($"{gameObject.name} took {Mathf.RoundToInt(finalDamage)} damage! Current health: {currentHealth}");
-
         if (currentHealth <= 0)
         {
             Die();
@@ -136,15 +136,14 @@ public class UnitBaseStats : MonoBehaviour
 
     private void Die()
     {
-     /*   Debug.Log($"{gameObject.name} died! Unit value: {unitValue}");
         if (team.Equals("1"))
         {
-            moneyMaker.SpendMoneyP2(-unitValue);
+            spriteCreator.modifyCountP1(-1);
         }
         else
         {
-            moneyMaker.SpendMoneyP1(-unitValue);
-        }*/
+            spriteCreator.modifyCountP2(-1);
+        }
         Destroy(gameObject); // Remove the unit from the scene
 
     }
@@ -162,6 +161,8 @@ public class UnitBaseStats : MonoBehaviour
                     attackerDamage *= 1.5f; // Magic > Heavy
                 else if (defender.armorType == ArmorType.Light)
                     attackerDamage *= 0.5f; // Magic < Light
+                else if (defender.armorType == ArmorType.Cloth)
+                    attackerDamage *= 0.75f; // Magic < Normal
                 break;
 
             case DamageType.Pierce:
@@ -169,6 +170,8 @@ public class UnitBaseStats : MonoBehaviour
                     attackerDamage *= 1.5f; // Pierce > Light
                 else if (defender.armorType == ArmorType.Heavy)
                     attackerDamage *= 0.5f; // Pierce < Heavy
+                else if (defender.armorType == ArmorType.Cloth)
+                    attackerDamage *= 0.75f; // Pierce < Cloth
                 break;
 
             case DamageType.Normal:
@@ -176,6 +179,8 @@ public class UnitBaseStats : MonoBehaviour
                     attackerDamage *= 1.5f; // Normal > Cloth
                 else if (defender.armorType == ArmorType.Light)
                     attackerDamage *= 0.5f; // Normal < Light
+                else if (defender.armorType == ArmorType.Heavy)
+                    attackerDamage *= 0.75f; // Normal < Heavy
                 break;
         }
 
@@ -190,10 +195,12 @@ public class UnitBaseStats : MonoBehaviour
         {
             damage = 20;
             attackSpeed = 1.5f;
-            maxHealth = 80;
+            maxHealth = 180;
             range = 100f;
             armorType = ArmorType.Cloth;
             damageType = DamageType.Magic;
+            unitValue = 10f;
+            speed = 30f;
         }
     }
 
@@ -204,10 +211,13 @@ public class UnitBaseStats : MonoBehaviour
         {
             damage = 15;
             attackSpeed = 1.2f;
-            maxHealth = 90;
+            maxHealth = 100;
             range = 150f;
             armorType = ArmorType.Light;
             damageType = DamageType.Pierce;
+            unitValue = 10f;
+            speed = 40f;
+
         }
     }
 
@@ -216,12 +226,14 @@ public class UnitBaseStats : MonoBehaviour
     {
         public Guardian()
         {
-            damage = 10;
+            damage = 5;
             attackSpeed = 0.8f;
-            maxHealth = 150;
+            maxHealth = 300;
             range = 40f;
             armorType = ArmorType.Heavy;
             damageType = DamageType.Normal;
+            unitValue = 10f;
+            speed = 60f;
         }
     }
 
@@ -232,10 +244,12 @@ public class UnitBaseStats : MonoBehaviour
         {
             damage = 18;
             attackSpeed = 1.8f;
-            maxHealth = 70;
+            maxHealth = 130;
             range = 50f;
             armorType = ArmorType.Light;
             damageType = DamageType.Pierce;
+            unitValue = 10f;
+            speed = 50f;
         }
     }
 }

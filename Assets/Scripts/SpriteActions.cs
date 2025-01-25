@@ -15,6 +15,7 @@ public class SpriteSheetAnimator : MonoBehaviour
 
     public Transform targetEnemy;
     private MoneyManager moneyMaker;
+    private SpriteCreator spriteCreator;
 
 
     // Method to stop the movement
@@ -28,7 +29,8 @@ public class SpriteSheetAnimator : MonoBehaviour
     }
     private void Start()
     {
-        moneyMaker = FindFirstObjectByType<MoneyManager>();  // Assign the MoneyManager if it's not already assigned
+        moneyMaker = FindFirstObjectByType<MoneyManager>(); 
+        spriteCreator = FindFirstObjectByType<SpriteCreator>(); 
         // Automatically start animation when the GameObject is created
         PlayAnimation();
 
@@ -85,19 +87,17 @@ public class SpriteSheetAnimator : MonoBehaviour
     public void handleDeath(GameObject sprite)
     {
 
-      //  UnitBaseStats baseStats = sprite.GetComponent<UnitBaseStats>();
+        UnitBaseStats baseStats = sprite.GetComponent<UnitBaseStats>();
         CastleStats castleStats = targetCastle.GetComponent<CastleStats>();
 
-    /*    if (baseStats.team.Equals("1"))
+        if (baseStats.team.Equals("1"))
         {
-            moneyMaker.SpendMoneyP1(-(baseStats.unitValue / 2));
-            moneyMaker.SpendMoneyP2(-baseStats.unitValue);
+            spriteCreator.modifyCountP1(-1);
         }
         else
         {
-            moneyMaker.SpendMoneyP1(-baseStats.unitValue);
-            moneyMaker.SpendMoneyP2(-(baseStats.unitValue / 2));
-        }*/
+            spriteCreator.modifyCountP2(-1);
+        }
         castleStats.setHp(10);
         Destroy(sprite);
     }
