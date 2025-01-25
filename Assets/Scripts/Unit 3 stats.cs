@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class Unit3stats : UnitBaseStats
 {
-    void Start()
+    protected override void Start()
     {
-        // Set unique values for Unit 1
-        range = 10;
-        damage = 3;
+        // Customize stats for Unit 2
+        range = 5;
+        damage = 5;
         attackSpeed = 0.8f;
-        maxHealth = 600;
-        unitValue = 40;
-        Debug.Log($"{gameObject.name} initialized with max health: {maxHealth}");
-    Debug.Log($"{gameObject.name} initialized with max range: {range}");
-    Debug.Log($"{gameObject.name} initialized with max damage: {damage}");
-    Debug.Log($"{gameObject.name} initialized with max attackSpeed: {attackSpeed}");
-    Debug.Log($"{gameObject.name} initialized with max unitValue: {unitValue}");
+        maxHealth = 100;
+        unitValue = 30;
+
+        // Call the base class's Start method
+        base.Start();
     }
 }
