@@ -4,6 +4,7 @@ public class AttackMechanics : MonoBehaviour
 {
     private UnitBaseStats BaseStats;         // Reference to the unit's stats
     private float nextAttackTime = 0f;      // Time tracker for attack cooldown
+    private const float attackCooldown = 0.5f; // Cooldown interval (0.5 seconds)
     private Transform targetEnemy;          // Current target within range
 
     void Start()
@@ -22,18 +23,18 @@ public class AttackMechanics : MonoBehaviour
     }
 
     void Update()
+{
+    // If there's a target and it's within range, attempt to attack
+    if (targetEnemy != null)
     {
-        // If there's a target and it's within range, attack
-        if (targetEnemy != null)
+        float distance = Vector2.Distance(transform.position, targetEnemy.position);
+        if (distance <= BaseStats.range && Time.time >= nextAttackTime)
         {
-            float distance = Vector2.Distance(transform.position, targetEnemy.position);
-            if (distance <= BaseStats.range && Time.time >= nextAttackTime)
-            {
-                Attack();
-                nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
-            }
+            Attack();
+            nextAttackTime = Time.time + attackCooldown; // Set the next allowed attack time
         }
     }
+}
 
     private void Attack()
     {
@@ -53,7 +54,8 @@ public class AttackMechanics : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Check if the object entering range is from the opposite team (not the same team)
-        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
+        if ((BaseStats.team == "1" && collision.CompareTag("Team 2")) || 
+    (BaseStats.team == "2" && collision.CompareTag("Team 1")))
         {
             targetEnemy = collision.transform; // Set it as the target
             Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
@@ -63,7 +65,7 @@ public class AttackMechanics : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         // Clear the target if the enemy leaves the range
-        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
+        if (collision.CompareTag(!BaseStats.team.Equals("0") ? "Team 1": "Team 0"))
         {
             Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
             targetEnemy = null;
