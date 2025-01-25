@@ -2115,6 +2115,7 @@ GameObject:
   - component: {fileID: 1872190672}
   - component: {fileID: 1872190674}
   - component: {fileID: 1872190673}
+  - component: {fileID: 1872190675}
   m_Layer: 5
   m_Name: CastleP2
   m_TagString: Untagged
@@ -2179,6 +2180,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872190671}
   m_CullTransparentMesh: 1
+--- !u!114 &1872190675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872190671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc8ffeac991cf44294242ac1ca41c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 2
+  range: 50
+  damage: 10
+  attackSpeed: 0
+  maxHealth: 100
+  unitValue: 50
 --- !u!1 &1889777629
 GameObject:
   m_ObjectHideFlags: 0
@@ -2190,6 +2209,7 @@ GameObject:
   - component: {fileID: 1889777630}
   - component: {fileID: 1889777632}
   - component: {fileID: 1889777631}
+  - component: {fileID: 1889777633}
   m_Layer: 5
   m_Name: CastleP1
   m_TagString: Untagged
@@ -2254,6 +2274,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889777629}
   m_CullTransparentMesh: 1
+--- !u!114 &1889777633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889777629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc8ffeac991cf44294242ac1ca41c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 1
+  range: 50
+  damage: 10
+  attackSpeed: 0
+  maxHealth: 100
+  unitValue: 50
 --- !u!1 &2079406664
 GameObject:
   m_ObjectHideFlags: 0

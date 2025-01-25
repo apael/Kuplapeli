@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 8742914815341014712}
   - component: {fileID: 7290750185803149563}
   - component: {fileID: 6978002618482963059}
-  - component: {fileID: 1052590755602848863}
-  - component: {fileID: 468544262355198086}
-  - component: {fileID: -216557287159821067}
   m_Layer: 0
   m_Name: Unit 3
   m_TagString: Untagged
@@ -118,51 +115,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1052590755602848863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 529142834561537056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7cadb4d08d209749b02583aa3488cf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 1
-  range: 5
-  damage: 10
-  attackSpeed: 1
-  maxHealth: 100
-  unitValue: 50
---- !u!114 &468544262355198086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 529142834561537056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 087347987559d3941833808f4061ecd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-216557287159821067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 529142834561537056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bc80c75d3790614baef8efb822612d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 1
-  range: 3
-  damage: 10
-  attackSpeed: 1
-  maxHealth: 100
-  unitValue: 50

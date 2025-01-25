@@ -19,6 +19,9 @@ public class AttackMechanics : MonoBehaviour
             Debug.LogError("UnitStats component is missing on " + gameObject.name);
             return;
         }
+
+        // Optional: Set the enemyTag dynamically based on team (if you want)
+        // enemyTag = BaseStats.team == "team 1" ? "team 2" : "team 1";
     }
 
     void Update()
@@ -37,6 +40,11 @@ public class AttackMechanics : MonoBehaviour
                 Attack();
                 nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
             }
+
+        }
+        else
+        {
+            move.ContinueMovement();
 
         }
     }
@@ -71,35 +79,11 @@ public class AttackMechanics : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        LookForNewEnemiesInRange();
-    }
-
-
-
-    private void LookForNewEnemiesInRange()
-    {
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
-        bool foundEnemy = false; // Flag to track if an enemy is found
-
-        foreach (Collider2D enemy in enemiesInRange)
+        UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
+        if (!collisionStats.team.Equals(BaseStats.team))
         {
-            // Check if the enemy has a UnitBaseStats component
-            UnitBaseStats enemyStats = enemy.GetComponent<UnitBaseStats>();
-
-            // Ensure enemyStats is not null and the enemy is on a different team
-            if (enemyStats != null && !enemyStats.team.Equals(BaseStats.team))
-            {
-                // If a new enemy is found, set it as the target
-                targetEnemy = enemyStats.transform;
-                Debug.Log($"{gameObject.name} found new enemy: {enemyStats.gameObject.name}");
-                foundEnemy = true; // Set flag to true if enemy is found
-                break; // Optionally, break if you just need the first enemy
-            }
-        }
-        // If no enemies were found, continue moving
-        if (!foundEnemy)
-        {
-            move.ContinueMovement(); // Your method to continue moving
+            Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
+            targetEnemy = null;
         }
     }
 
