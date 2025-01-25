@@ -1,19 +1,17 @@
-using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;  // Required for working with UI components
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class WeightedSpriteCreatorAndMover : MonoBehaviour
 {
     // References to the sprites
-    public Sprite sprite1;
-    public Sprite sprite2;
-    public Sprite sprite3;
-    public Sprite sprite4;
 
     // The Canvas where the sprite will be placed (if it's a UI element)
     public Canvas canvas;
 
-
+    public GameObject[] predefinedObjectsP1; 
+    public GameObject[] predefinedObjectsP2; 
 
     // Weights for each sprite (higher values mean higher chance of selection)
 
@@ -35,15 +33,15 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public void sendUnitP1()
 {
-CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1);
+CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1,predefinedObjectsP1, 1, "Team 1");
 }
 
        public void sendUnitP2()
 {
-CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2);
+CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2,predefinedObjectsP2, 2, "Team 2");
 } 
     // This method will be called by the button OnClick to create a random sprite and move it
-    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4 )
+    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, int team, string tag )
     {
         // Weights array for weighted random selection
         float[] weights = { sp1, sp2, sp3, sp4 };
@@ -51,20 +49,16 @@ CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,spri
         // Choose a random index based on weights
         int randomIndex = GetRandomIndexByWeight(weights);
 
-        // Create the sprite object
-        GameObject spriteObject = new GameObject("RandomSprite");
+    GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
 
-        // Add a SpriteRenderer component to the new GameObject
-        Image image = spriteObject.AddComponent<Image>();
+    // Optional: Set the name for clarity in the hierarchy
+    spriteObject.name = "RandomSprite_" + randomIndex;
 
-        // Assign the randomly selected sprite to the SpriteRenderer
-        switch (randomIndex)
-        {
-            case 0: image.sprite = sprite1; break;
-            case 1: image.sprite = sprite2; break;
-            case 2: image.sprite = sprite3; break;
-            case 3: image.sprite = sprite4; break;
-        }
+    UnitBaseStats baseStats = spriteObject.GetComponent<UnitBaseStats>();
+    CircleCollider2D collider = spriteObject.GetComponent<CircleCollider2D>();
+    baseStats.team = team;
+    spriteObject.tag = tag;
+    collider.radius = baseStats.range;
 
     // Convert the castle position to screen space
     Vector3 castleWorldPosition = ownCastle.transform.position;
@@ -93,7 +87,7 @@ CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,spri
     // Coroutine to move the sprite towards the target position over time
     private IEnumerator MoveSpriteToTarget(GameObject sprite, GameObject enemyCastle )
     {
-        float duration = 2f;  // Duration of the movement
+        float duration = 10f;  // Duration of the movement
         Vector3 startPosition = sprite.transform.position;
         Vector3 targetPosition = enemyCastle.transform.position; // Get target's position
         float timeElapsed = 0f;

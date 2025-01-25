@@ -10,7 +10,6 @@ public class AttackMechanics : MonoBehaviour
     {
         // Retrieve the UnitStats component attached to this GameObject
         BaseStats = GetComponent<UnitBaseStats>();
-            Debug.LogError(BaseStats);
 
         if (BaseStats == null)
         {
@@ -54,7 +53,7 @@ public class AttackMechanics : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Check if the object entering range is from the opposite team (not the same team)
-        if (collision.CompareTag(!BaseStats.team.Equals(1) ? "Team 2": "Team 1"))
+        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
         {
             targetEnemy = collision.transform; // Set it as the target
             Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
@@ -64,7 +63,7 @@ public class AttackMechanics : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         // Clear the target if the enemy leaves the range
-        if (collision.CompareTag(!BaseStats.team.Equals(1) ? "Team 2": "Team 1"))
+        if (collision.CompareTag(!BaseStats.team.Equals("1") ? "Team 2": "Team 1"))
         {
             Debug.Log($"{gameObject.name} lost sight of {collision.name}. Clearing target.");
             targetEnemy = null;
