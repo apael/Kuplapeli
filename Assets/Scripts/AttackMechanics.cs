@@ -28,7 +28,7 @@ public class AttackMechanics : MonoBehaviour
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
-            if (distance <= BaseStats.range && Time.time >= nextAttackTime)
+            if (distance <= (BaseStats.range) && Time.time >= nextAttackTime)
             {
                 Attack();
                 nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
@@ -60,14 +60,20 @@ public class AttackMechanics : MonoBehaviour
         if (!collisionStats.team.Equals(BaseStats.team))
         {
             targetEnemy = collision.transform; // Set it as the target
-            move.targetEnemy = collision.transform;
+            float distance = Vector2.Distance(transform.position, targetEnemy.position);
 
+            if (distance <= (BaseStats.range))
+            {
+                move.targetEnemy = collision.transform;
+                move.StopMovement();
+            }
             Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        move.ContinueMovement();
         LookForNewEnemiesInRange();
     }
 
@@ -76,8 +82,6 @@ public class AttackMechanics : MonoBehaviour
     private void LookForNewEnemiesInRange()
     {
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
-        bool foundEnemy = false; // Flag to track if an enemy is found
-
         foreach (Collider2D enemy in enemiesInRange)
         {
             // Check if the enemy has a UnitBaseStats component
@@ -90,7 +94,6 @@ public class AttackMechanics : MonoBehaviour
                 targetEnemy = enemyStats.transform;
                 move.targetEnemy = enemyStats.transform;
                 Debug.Log($"{gameObject.name} found new enemy: {enemyStats.gameObject.name}");
-                foundEnemy = true; // Set flag to true if enemy is found
                 break; // Optionally, break if you just need the first enemy
             }
         }

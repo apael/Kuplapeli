@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WeightedSpriteCreatorAndMover : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     public GameObject[] predefinedObjectsP1;
     public GameObject[] predefinedObjectsP2;
+
+    public TextMeshProUGUI weightsTextP1;
+    public TextMeshProUGUI weightsTextP2;
 
     // Weights for each sprite (higher values mean higher chance of selection)
 
@@ -30,14 +34,35 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     public GameObject CastleP1;
     public GameObject CastleP2;
 
+    private MoneyManager money;
+
+    private void Start()
+    {
+        // Automatically start animation when the GameObject is created
+        money = GetComponent<MoneyManager>();
+        UpdateWeightsTextP2();
+        UpdateWeightsTextP1();
+
+    }
+
+
+
     public void sendUnitP1()
     {
-        CreateAndMoveRandomSprite(CastleP1, CastleP2, sprite1WeightP1, sprite2WeightP1, sprite3WeightP1, sprite4WeightP1, predefinedObjectsP1, "1", "Team 1");
+        bool hasMoney = money.SpendMoneyP1(10f);
+        if (hasMoney)
+        {
+            CreateAndMoveRandomSprite(CastleP1, CastleP2, sprite1WeightP1, sprite2WeightP1, sprite3WeightP1, sprite4WeightP1, predefinedObjectsP1, "1", "Team 1");
+        }
     }
 
     public void sendUnitP2()
     {
-        CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+        bool hasMoney = money.SpendMoneyP2(10f);
+        if (hasMoney)
+        {
+            CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+        }
     }
     // This method will be called by the button OnClick to create a random sprite and move it
     public void CreateAndMoveRandomSprite(GameObject ownCastle, GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, string team, string tag)
@@ -63,7 +88,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         Vector3 castleWorldPosition = ownCastle.transform.position;
 
         // Optional: Add an offset to spawn the sprite above the castle
-        castleWorldPosition.y += 2.0f; // You can adjust this value to control how high the sprite spawns
+        castleWorldPosition.y += Random.Range(-100.0f, 100.0f); // You can adjust this value to control how high the sprite spawns
 
         // Convert the world position to screen space
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(castleWorldPosition);
@@ -124,6 +149,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         sprite2WeightP1 = sp2;
         sprite3WeightP1 = sp3;
         sprite4WeightP1 = sp4;
+        UpdateWeightsTextP1();
 
     }
 
@@ -133,31 +159,63 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         sprite2WeightP2 = sp2;
         sprite3WeightP2 = sp3;
         sprite4WeightP2 = sp4;
-
+        UpdateWeightsTextP2();
     }
 
     public void reRollP1()
     {
-        // Define new weights (can be hardcoded or dynamic)
-        float newSprite1Weight = 1f;
-        float newSprite2Weight = 3f;
-        float newSprite3Weight = 5f;
-        float newSprite4Weight = 2f;
+        bool hasMoney = money.SpendMoneyP1(50f);
+        if (hasMoney)
+        {
 
-        // Call the original UpdateWeights method with these values
-        UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+            // Define new weights (can be hardcoded or dynamic)
+            float newSprite1Weight = Random.Range(1f, 10f);
+            float newSprite2Weight = Random.Range(1f, 10f);
+            float newSprite3Weight = Random.Range(1f, 10f);
+            float newSprite4Weight = Random.Range(1f, 10f);
+
+            // Call the original UpdateWeights method with these values
+            UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+        }
     }
 
     public void reRollP2()
     {
-        // Define new weights (can be hardcoded or dynamic)
-        float newSprite1Weight = 1f;
-        float newSprite2Weight = 3f;
-        float newSprite3Weight = 5f;
-        float newSprite4Weight = 2f;
+        bool hasMoney = money.SpendMoneyP2(50f);
+        if (hasMoney)
+        {
 
-        // Call the original UpdateWeights method with these values
-        UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+
+            // Generate random weights between 1 and 10 for each sprite
+            float newSprite1Weight = Random.Range(1f, 10f);
+            float newSprite2Weight = Random.Range(1f, 10f);
+            float newSprite3Weight = Random.Range(1f, 10f);
+            float newSprite4Weight = Random.Range(1f, 10f);
+
+            // Call the UpdateWeightsP2 method with the new random values
+            UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+        }
+
+
     }
 
+    private void UpdateWeightsTextP1()
+    {
+        float totalWeight = sprite1WeightP1 + sprite2WeightP1 + sprite3WeightP1 + sprite4WeightP1;
+        weightsTextP1.text =
+                           $"S1: {(sprite1WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"S2: {(sprite2WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"S3: {(sprite3WeightP1 / totalWeight * 100f):F1}%\n" +
+                           $"S4: {(sprite4WeightP1 / totalWeight * 100f):F1}%";
+    }
+
+    private void UpdateWeightsTextP2()
+    {
+        float totalWeight = sprite1WeightP1 + sprite2WeightP1 + sprite3WeightP1 + sprite4WeightP1;
+        weightsTextP2.text =
+                             $"S1: {(sprite1WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"S2: {(sprite2WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"S3: {(sprite3WeightP2 / totalWeight * 100f):F1}%\n" +
+                             $"S4: {(sprite4WeightP2 / totalWeight * 100f):F1}%";
+    }
 }

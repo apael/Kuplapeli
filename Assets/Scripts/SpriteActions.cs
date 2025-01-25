@@ -15,7 +15,6 @@ public class SpriteSheetAnimator : MonoBehaviour
 
     public Transform targetEnemy;
 
-
     // Method to stop the movement
     public void StopMovement()
     {
@@ -37,18 +36,8 @@ public class SpriteSheetAnimator : MonoBehaviour
     }
     private IEnumerator MoveSpriteToTarget(GameObject sprite, GameObject enemyCastle, float speed)
     {
-        if (sprite == null || enemyCastle == null)
-        {
-            Debug.LogWarning("Sprite or enemyCastle is null. Aborting movement.");
-            yield break;
-        }
-
         Vector3 startPosition = sprite.transform.position;
         Vector3 targetPosition = enemyCastle.transform.position; // Default to enemyCastle
-        if (targetEnemy != null)  // If targetEnemy is available, move towards it
-        {
-            targetPosition = targetEnemy.position;
-        }
 
         float totalDistance = Vector3.Distance(startPosition, targetPosition); // Calculate total distance to the target
         float traveledDistance = 0f; // Tracks how far the sprite has moved
@@ -57,7 +46,10 @@ public class SpriteSheetAnimator : MonoBehaviour
         while (sprite.transform.position != targetCastle.transform.position)
         {
             float moveStep = speed * 10 * Time.deltaTime; // Movement step per frame
-
+            if (isStopped)
+            {
+                yield return new WaitWhile(() => isStopped); // Wait until `isStopped` is false
+            }
 
             if (targetEnemy != null)
             {
