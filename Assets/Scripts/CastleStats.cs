@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CastleStats : MonoBehaviour
 {
-    public int maxHealth = 100;   // Maximum health
+    public int maxHealth = 1000;   // Maximum health
     public int currentHealth;     // Current health of the unit
     public HpBar hpBar;
     public GameManager gameManager;  // Reference to the GameManager

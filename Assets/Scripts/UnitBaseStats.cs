@@ -9,6 +9,7 @@ public class UnitBaseStats : MonoBehaviour
     public int maxHealth = 100;   // Maximum health
     public float unitValue;  // Value when this unit dies
     public HpBar hpBar; // Reference to the health bar object
+    public float speed;
     public enum ArmorType { Cloth, Heavy, Light }
     public enum DamageType { Magic, Normal, Pierce }
     public enum UnitClass { Mage, Archer, Guardian, Thief }
@@ -29,40 +30,47 @@ public class UnitBaseStats : MonoBehaviour
         switch (selectedClass)
         {
             case UnitClass.Mage:
-                damage = 20;
+                damage = 25;
                 attackSpeed = 1.5f;
-                maxHealth = 80;
+                maxHealth = 180;
                 range = 100f;
                 armorType = ArmorType.Cloth;
                 damageType = DamageType.Magic;
                 unitValue = 10f;
+                speed = 30f;
+
                 break;
             case UnitClass.Archer:
-                damage = 15;
+                damage = 20;
                 attackSpeed = 1.2f;
-                maxHealth = 90;
+                maxHealth = 100;
                 range = 150f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;
+                speed = 40f;
+
                 break;
             case UnitClass.Guardian:
-                damage = 10;
+                damage = 5;
                 attackSpeed = 0.8f;
-                maxHealth = 150;
+                maxHealth = 300;
                 range = 40f;
                 armorType = ArmorType.Heavy;
                 damageType = DamageType.Normal;
                 unitValue = 10f;
+                speed = 60f;
                 break;
             case UnitClass.Thief:
                 damage = 18;
                 attackSpeed = 1.8f;
-                maxHealth = 70;
+                maxHealth = 130;
                 range = 50f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;
+                speed = 50f;
+
                 break;
         }
 
@@ -88,27 +96,27 @@ public class UnitBaseStats : MonoBehaviour
         {
             case DamageType.Magic:
                 if (armorType == ArmorType.Heavy)
-                    finalDamage *= 1.5f; // Magic > Heavy
+                    finalDamage *= 2f; // Magic > Heavy
                 else if (armorType == ArmorType.Light)
-                    finalDamage *= 0.5f; // Magic < Light
+                    finalDamage *= 0.3f; // Magic < Light
                 else if (armorType == ArmorType.Cloth)
                     finalDamage *= 0.75f; // Magic < Normal
                 break;
 
             case DamageType.Pierce:
                 if (armorType == ArmorType.Light)
-                    finalDamage *= 1.5f; // Pierce > Light
+                    finalDamage *= 2f; // Pierce > Light
                 else if (armorType == ArmorType.Heavy)
-                    finalDamage *= 0.5f; // Pierce < Heavy
+                    finalDamage *= 0.3f; // Pierce < Heavy
                 else if (armorType == ArmorType.Cloth)
                     finalDamage *= 0.75f; // Pierce < Cloth
                 break;
 
             case DamageType.Normal:
                 if (armorType == ArmorType.Cloth)
-                    finalDamage *= 1.5f; // Normal > Cloth
+                    finalDamage *= 2f; // Normal > Cloth
                 else if (armorType == ArmorType.Light)
-                    finalDamage *= 0.5f; // Normal < Light
+                    finalDamage *= 0.3f; // Normal < Light
                 else if (armorType == ArmorType.Heavy)
                     finalDamage *= 0.75f; // Normal < Heavy
                 break;

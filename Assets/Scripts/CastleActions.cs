@@ -32,6 +32,9 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     public float sprite3WeightP2 = 3f;
     public float sprite4WeightP2 = 4f;
 
+    private float updateCooldown = 0.3f; // Time in seconds between updates
+    private float updateTimer = 0f;
+
     // Castles
     public GameObject CastleP1;
     public GameObject CastleP2;
@@ -39,6 +42,10 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     private MoneyManager money;
 
     public float winProbabilityThreshold = 0.5f; // Threshold for deciding re-roll
+
+    public bool aiOn;
+    public GameObject aiCastle;
+    private bool giftGiven = false;
 
     private void Start()
     {
@@ -59,24 +66,36 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
     void Update()
     {
-        float side1WinProbability = CalculateSideWinProbability();
 
-        if (side1WinProbability > winProbabilityThreshold)
+        if (aiOn)
         {
-            float newSprite1Weight = Random.Range(1f, 10f);
-            float newSprite2Weight = Random.Range(1f, 10f);
-            float newSprite3Weight = Random.Range(1f, 10f);
-            float newSprite4Weight = Random.Range(1f, 10f);
+            updateTimer += Time.deltaTime; // Increment the timer
 
-            // Call the UpdateWeightsP2 method with the new random values
-            UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
-        }
-        else
-        {
-            bool hasMoney = money.SpendMoneyP2(10f);
-            if (hasMoney)
+            if (updateTimer >= updateCooldown) // Check if enough time has passed
             {
-                CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+                updateTimer = 0f; // Reset the timer
+
+                float side1WinProbability = CalculateSideWinProbability();
+
+                if (side1WinProbability > winProbabilityThreshold)
+                {
+                    UpdateWeightsP2(Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f), Random.Range(1f, 10f));
+                }
+                else
+                {
+                    CastleStats castleStats = aiCastle.GetComponent<CastleStats>();
+                    if (castleStats?.currentHealth < castleStats?.maxHealth / 2 && !giftGiven)
+                    {
+                        giftGiven = true;
+                        money.SpendMoneyP2(-300f);
+                    }
+
+                    bool hasMoney = money.SpendMoneyP2(10f);
+                    if (hasMoney)
+                    {
+                        CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+                    }
+                }
             }
         }
     }
@@ -108,7 +127,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
 
         // Choose a random index based on weights
         int randomIndex = GetRandomIndexByWeight(weights);
-
+        Debug.Log($"Selected index: {randomIndex}");
         GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
 
         // Optional: Set the name for clarity in the hierarchy
@@ -145,7 +164,7 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
         // Start moving the sprite towards the target
         if (controller != null)
         {
-            controller.StartMovingSprite(spriteObject, enemyCastle, 10f);
+            controller.StartMovingSprite(spriteObject, enemyCastle, baseStats.speed);
         }
     }
 
@@ -154,29 +173,22 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     // Helper method to select a random index based on the weights
     private int GetRandomIndexByWeight(float[] weights)
     {
-        // Calculate the total sum of all weights
+        if (weights == null || weights.Length == 0) return -1; // Validate input
+
         float totalWeight = 0f;
-        foreach (float weight in weights)
-        {
-            totalWeight += weight;
-        }
+        foreach (float weight in weights) totalWeight += Mathf.Max(0, weight); // Ignore negatives
 
-        // Pick a random value within the total weight range
+        if (totalWeight <= 0f) return -1; // Ensure total weight is valid
+
         float randomValue = Random.Range(0f, totalWeight);
-
-        // Iterate through the weights and select the correct index
-        float cumulativeWeight = 0f;
         for (int i = 0; i < weights.Length; i++)
         {
-            cumulativeWeight += weights[i];
-            if (randomValue < cumulativeWeight)
-            {
-                return i;  // Return the index of the selected sprite
-            }
+            if ((randomValue -= weights[i]) < 0f) return i; // Return index when randomValue falls below 0
         }
 
-        return weights.Length - 1;  // Fallback in case of rounding errors
+        return weights.Length - 1; // Fallback (shouldn't occur if weights are valid)
     }
+
 
     // This method will update the weights when the second button is pressed
     public void UpdateWeightsP1(float sp1, float sp2, float sp3, float sp4)

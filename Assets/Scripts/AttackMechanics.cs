@@ -10,19 +10,9 @@ public class AttackMechanics : MonoBehaviour
 
     void Start()
     {
-        // Retrieve the UnitStats component attached to this GameObject
         BaseStats = GetComponent<UnitBaseStats>();
         move = GetComponent<SpriteSheetAnimator>();
 
-
-        if (BaseStats == null)
-        {
-            Debug.LogError("UnitStats component is missing on " + gameObject.name);
-            return;
-        }
-
-        // Optional: Set the enemyTag dynamically based on team (if you want)
-        // enemyTag = BaseStats.team == "team 1" ? "team 2" : "team 1";
     }
 
     void Update()
@@ -52,12 +42,6 @@ public class AttackMechanics : MonoBehaviour
         if (enemyStats != null)
         {
             enemyStats.TakeDamage(BaseStats.damage, BaseStats.damageType);
-            Debug.Log($"{gameObject?.name} attacked {targetEnemy?.name} for {BaseStats?.damage} damage!");
-
-        }
-        else
-        {
-            Debug.LogWarning("Enemy does not have UnitBaseStats component.");
         }
     }
 
@@ -75,13 +59,15 @@ public class AttackMechanics : MonoBehaviour
                 move.targetEnemy = collision.transform;
                 move.StopMovement();
             }
-            Debug.Log($"{gameObject.name} detected {collision.name} as enemy.");
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        move.ContinueMovement();
+        if (!targetEnemy)
+        {
+            move.ContinueMovement();
+        }
         LookForNewEnemiesInRange();
     }
 
@@ -101,7 +87,6 @@ public class AttackMechanics : MonoBehaviour
                 // If a new enemy is found, set it as the target
                 targetEnemy = enemyStats.transform;
                 move.targetEnemy = enemyStats.transform;
-                Debug.Log($"{gameObject.name} found new enemy: {enemyStats.gameObject.name}");
                 break; // Optionally, break if you just need the first enemy
             }
         }
