@@ -24,6 +24,8 @@ public class MoneyManager : MonoBehaviour
         {
             p1Money -= amount;  // Reduce the money by the specified amount
             UpdateMoneyDisplay();  // Update the displayed money
+                        Debug.Log(p1Money);  // If there's not enough money
+
         }
         else
         {
@@ -37,6 +39,7 @@ public class MoneyManager : MonoBehaviour
         {
             p2Money -= amount;  // Reduce the money by the specified amount
             UpdateMoneyDisplay();  // Update the displayed money
+            Debug.Log(p2Money);  // If there's not enough money
         }
         else
         {
