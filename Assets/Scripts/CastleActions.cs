@@ -5,13 +5,12 @@ using UnityEngine.UI;
 
 public class WeightedSpriteCreatorAndMover : MonoBehaviour
 {
-    // References to the sprites
-
+    private Coroutine moveCoroutine;
     // The Canvas where the sprite will be placed (if it's a UI element)
     public Canvas canvas;
 
-    public GameObject[] predefinedObjectsP1; 
-    public GameObject[] predefinedObjectsP2; 
+    public GameObject[] predefinedObjectsP1;
+    public GameObject[] predefinedObjectsP2;
 
     // Weights for each sprite (higher values mean higher chance of selection)
 
@@ -32,16 +31,16 @@ public class WeightedSpriteCreatorAndMover : MonoBehaviour
     public GameObject CastleP2;
 
     public void sendUnitP1()
-{
-CreateAndMoveRandomSprite(CastleP1, CastleP2,sprite1WeightP1,sprite2WeightP1,sprite3WeightP1,sprite4WeightP1,predefinedObjectsP1, "1", "Team 1");
-}
+    {
+        CreateAndMoveRandomSprite(CastleP1, CastleP2, sprite1WeightP1, sprite2WeightP1, sprite3WeightP1, sprite4WeightP1, predefinedObjectsP1, "1", "Team 1");
+    }
 
-       public void sendUnitP2()
-{
-CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,sprite3WeightP2,sprite4WeightP2,predefinedObjectsP2, "2", "Team 2");
-} 
+    public void sendUnitP2()
+    {
+        CreateAndMoveRandomSprite(CastleP2, CastleP1, sprite1WeightP2, sprite2WeightP2, sprite3WeightP2, sprite4WeightP2, predefinedObjectsP2, "2", "Team 2");
+    }
     // This method will be called by the button OnClick to create a random sprite and move it
-    public void CreateAndMoveRandomSprite(GameObject ownCastle ,GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, string team, string tag )
+    public void CreateAndMoveRandomSprite(GameObject ownCastle, GameObject enemyCastle, float sp1, float sp2, float sp3, float sp4, GameObject[] predefinedObjects, string team, string tag)
     {
         // Weights array for weighted random selection
         float[] weights = { sp1, sp2, sp3, sp4 };
@@ -49,63 +48,47 @@ CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,spri
         // Choose a random index based on weights
         int randomIndex = GetRandomIndexByWeight(weights);
 
-    GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
+        GameObject spriteObject = Instantiate(predefinedObjects[randomIndex]);
 
-    // Optional: Set the name for clarity in the hierarchy
-    spriteObject.name = "RandomSprite_" + randomIndex;
+        // Optional: Set the name for clarity in the hierarchy
+        spriteObject.name = "RandomSprite_" + randomIndex;
 
-    UnitBaseStats baseStats = spriteObject.GetComponent<UnitBaseStats>();
-    CircleCollider2D collider = spriteObject.GetComponent<CircleCollider2D>();
-    baseStats.team = team;
-    spriteObject.tag = tag;
-    collider.radius = baseStats.range;
+        UnitBaseStats baseStats = spriteObject.GetComponent<UnitBaseStats>();
+        CircleCollider2D collider = spriteObject.GetComponent<CircleCollider2D>();
+        baseStats.team = team;
+        spriteObject.tag = tag;
+        collider.radius = baseStats.range;
 
-    // Convert the castle position to screen space
-    Vector3 castleWorldPosition = ownCastle.transform.position;
+        // Convert the castle position to screen space
+        Vector3 castleWorldPosition = ownCastle.transform.position;
 
-    // Optional: Add an offset to spawn the sprite above the castle
-    castleWorldPosition.y += 2.0f; // You can adjust this value to control how high the sprite spawns
+        // Optional: Add an offset to spawn the sprite above the castle
+        castleWorldPosition.y += 2.0f; // You can adjust this value to control how high the sprite spawns
 
-    // Convert the world position to screen space
-    Vector3 screenPosition = Camera.main.WorldToScreenPoint(castleWorldPosition);
+        // Convert the world position to screen space
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(castleWorldPosition);
 
-    // Convert screen position to local position in the Canvas (UI space)
-    Vector2 localPosition;
-    RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPosition, Camera.main, out localPosition);
+        // Convert screen position to local position in the Canvas (UI space)
+        Vector2 localPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPosition, Camera.main, out localPosition);
 
-    // Set the position of the sprite object in the UI (canvas)
-    spriteObject.GetComponent<RectTransform>().localPosition = localPosition;
+        // Set the position of the sprite object in the UI (canvas)
+        spriteObject.GetComponent<RectTransform>().localPosition = localPosition;
 
-    // Optional: Set the parent to the Canvas
-    spriteObject.transform.SetParent(canvas.transform, false);
+        // Optional: Set the parent to the Canvas
+        spriteObject.transform.SetParent(canvas.transform, false);
+
+        SpriteSheetAnimator controller = spriteObject.GetComponent<SpriteSheetAnimator>();
 
 
         // Start moving the sprite towards the target
-        StartCoroutine(MoveSpriteToTarget(spriteObject,enemyCastle));
-    }
-
-    // Coroutine to move the sprite towards the target position over time
-    private IEnumerator MoveSpriteToTarget(GameObject sprite, GameObject enemyCastle )
-    {
-        float duration = 10f;  // Duration of the movement
-        Vector3 startPosition = sprite.transform.position;
-        Vector3 targetPosition = enemyCastle.transform.position; // Get target's position
-        float timeElapsed = 0f;
-
-        // Move the sprite towards the target position
-        while (timeElapsed < duration)
+        if (controller != null)
         {
-            sprite.transform.position = Vector3.Lerp(startPosition, targetPosition, timeElapsed / duration);
-            timeElapsed += Time.deltaTime;
-            yield return null;  // Wait for the next frame
+            controller.StartMovingSprite(spriteObject, enemyCastle, 10f);
         }
-
-        // Ensure the sprite reaches the target position exactly
-        sprite.transform.position = targetPosition;
-
-        // Destroy the sprite once it reaches the target
-        Destroy(sprite);
     }
+
+
 
     // Helper method to select a random index based on the weights
     private int GetRandomIndexByWeight(float[] weights)
@@ -144,7 +127,7 @@ CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,spri
 
     }
 
-        public void UpdateWeightsP2(float sp1, float sp2, float sp3, float sp4)
+    public void UpdateWeightsP2(float sp1, float sp2, float sp3, float sp4)
     {
         sprite1WeightP2 = sp1;
         sprite2WeightP2 = sp2;
@@ -154,27 +137,27 @@ CreateAndMoveRandomSprite(CastleP2,CastleP1,sprite1WeightP2,sprite2WeightP2,spri
     }
 
     public void reRollP1()
-{
-    // Define new weights (can be hardcoded or dynamic)
-    float newSprite1Weight = 1f;
-    float newSprite2Weight = 3f;
-    float newSprite3Weight = 5f;
-    float newSprite4Weight = 2f;
+    {
+        // Define new weights (can be hardcoded or dynamic)
+        float newSprite1Weight = 1f;
+        float newSprite2Weight = 3f;
+        float newSprite3Weight = 5f;
+        float newSprite4Weight = 2f;
 
-    // Call the original UpdateWeights method with these values
-    UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
-}
+        // Call the original UpdateWeights method with these values
+        UpdateWeightsP1(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+    }
 
     public void reRollP2()
-{
-    // Define new weights (can be hardcoded or dynamic)
-    float newSprite1Weight = 1f;
-    float newSprite2Weight = 3f;
-    float newSprite3Weight = 5f;
-    float newSprite4Weight = 2f;
+    {
+        // Define new weights (can be hardcoded or dynamic)
+        float newSprite1Weight = 1f;
+        float newSprite2Weight = 3f;
+        float newSprite3Weight = 5f;
+        float newSprite4Weight = 2f;
 
-    // Call the original UpdateWeights method with these values
-    UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
-}
+        // Call the original UpdateWeights method with these values
+        UpdateWeightsP2(newSprite1Weight, newSprite2Weight, newSprite3Weight, newSprite4Weight);
+    }
 
 }
