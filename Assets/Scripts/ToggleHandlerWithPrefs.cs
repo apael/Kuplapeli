@@ -24,6 +24,5 @@ public class ToggleHandlerWithPrefs : MonoBehaviour
         // Save the state to PlayerPrefs
         PlayerPrefs.SetInt(TogglePref, value ? 1 : 0);
         PlayerPrefs.Save(); // Ensure it's written to disk
-        Debug.Log("Toggle State Saved: " + value);
     }
 }
