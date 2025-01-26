@@ -5,6 +5,7 @@ public class CastleStats : MonoBehaviour
     public int maxHealth = 1000;   // Maximum health
     public int currentHealth;     // Current health of the unit
     public HpBar hpBar;
+    public string castleName;
     public GameManager gameManager;  // Reference to the GameManager
     private void Start()
     {
@@ -21,7 +22,7 @@ public class CastleStats : MonoBehaviour
         hpBar.setHealth(currentHealth);
         if (currentHealth <= 0)
         {
-            gameManager.GameOver();  // Pass the current instance of CastleStats
+            gameManager.GameOver(castleName);  // Pass the current instance of CastleStats
         }
     }
 }

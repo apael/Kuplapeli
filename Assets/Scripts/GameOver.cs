@@ -9,11 +9,24 @@ public class GameManager : MonoBehaviour
     public float timeBeforePause = 1f; // Time before pausing after game over (optional)
 
     // This method is called when the game over condition is met
-    public void GameOver()
+    public void GameOver(string winner)
     {
         gameOverPanel.SetActive(true);
+
         // Pause the game
         Time.timeScale = 0f;
+
+        GameObject winP1 = GameObject.Find("WinP1");
+        GameObject winP2 = GameObject.Find("WinP2");
+
+        if (winner == "p1")
+        {
+            winP2.SetActive(false);
+        }
+        else
+        {
+            winP1.SetActive(false);
+        }
 
         // Optionally, you can wait a few seconds before showing the game over screen
         Invoke("ShowGameOverScreen", timeBeforePause);
