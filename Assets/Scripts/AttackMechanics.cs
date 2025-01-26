@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 public class AttackMechanics : MonoBehaviour
 {
-    private UnitBaseStats BaseStats;         // Reference to the unit's stats
-    private float nextAttackTime = 0f;      // Time tracker for attack cooldown
-    private Transform targetEnemy;          // Current target within range
+    private UnitBaseStats BaseStats;
+    private float nextAttackTime = 0f;
+    private Transform targetEnemy;
 
     private SpriteSheetAnimator move;
-    public Sprite projectileSprite;  // The projectile prefab to instantiate
-    public Transform firePoint;  // The point from where the projectile will be shot
-    public Canvas canvas; // Reference to your Canvas
+    public Sprite projectileSprite;
+    public Transform firePoint;
+    public Canvas canvas;
     public GameObject projectilePrefab;
     void Start()
     {
@@ -23,17 +23,14 @@ public class AttackMechanics : MonoBehaviour
 
     void Update()
     {
-        // If there's a target and it's within range, attack
         if (targetEnemy != null)
         {
             float distance = Vector2.Distance(transform.position, targetEnemy.position);
             if (distance <= (BaseStats.range) && Time.time >= nextAttackTime)
             {
                 ShootProjectile(BaseStats.damage, BaseStats.damageType);
-                // Attack();
-                nextAttackTime = Time.time + BaseStats.attackSpeed; // Attack cooldown
+                nextAttackTime = Time.time + BaseStats.attackSpeed;
             }
-
         }
         else
         {
@@ -55,12 +52,7 @@ public class AttackMechanics : MonoBehaviour
 
             // Set the position of the sprite object in the UI (canvas)
             projectile.GetComponent<RectTransform>().localPosition = localPosition;
-
-            // Optional: Set the parent to the Canvas
             projectile.transform.SetParent(canvas.transform, false);
-
-
-            // Move the projectile across the screen
             StartCoroutine(MoveProjectile(projectile, targetEnemy));
         }
     }
@@ -71,7 +63,7 @@ public class AttackMechanics : MonoBehaviour
         if (projectile == null || targetEnemy == null || BaseStats == null)
         {
             Destroy(projectile);
-            yield break; // Exit early if the projectile or target is null
+            yield break;
         }
 
         Vector3 targetPosition = targetEnemy.position;
@@ -82,7 +74,7 @@ public class AttackMechanics : MonoBehaviour
             if (targetEnemy == null)
             {
                 Destroy(projectile);
-                yield break; // Exit the coroutine early
+                yield break;
             }
 
             // Move the projectile towards the target position
@@ -92,30 +84,26 @@ public class AttackMechanics : MonoBehaviour
             if (Vector3.Distance(projectile.transform.position, targetPosition) < 3f)
             {
                 Destroy(projectile);
-                break; // Exit the loop after destroying the projectile
+                break;
             }
-
-            // Yield until the next frame
             yield return null;
         }
         Destroy(projectile);
         if (targetEnemy != null)
         {
-            Attack(); // Perform the attack logic
+            UnitBaseStats enemyStats = targetEnemy.GetComponent<UnitBaseStats>();
+            Attack(enemyStats);
         }
         else
         {
-
             Destroy(projectile);
         }
     }
 
 
 
-    private void Attack()
+    private void Attack(UnitBaseStats enemyStats)
     {
-        // Access the enemy's UnitStats and apply damage
-        UnitBaseStats enemyStats = targetEnemy.GetComponent<UnitBaseStats>();
         if (enemyStats != null)
         {
             enemyStats.TakeDamage(BaseStats.damage, BaseStats.damageType);
@@ -125,11 +113,10 @@ public class AttackMechanics : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
-        // Check if the object entering range is from the opposite team (not the same team)
         if (collisionStats)
             if (!collisionStats.team.Equals(BaseStats.team) && !targetEnemy)
             {
-                targetEnemy = collision.transform; // Set it as the target
+                targetEnemy = collision.transform;
                 float distance = Vector2.Distance(transform.position, targetEnemy.position);
 
                 if (distance <= (BaseStats.range))
@@ -155,20 +142,16 @@ public class AttackMechanics : MonoBehaviour
     {
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
         Transform closestEnemy = null;
-        float closestDistance = float.MaxValue; // Start with a very large distance
+        float closestDistance = float.MaxValue;
 
         foreach (Collider2D enemy in enemiesInRange)
         {
-            // Check if the enemy has a UnitBaseStats component
             UnitBaseStats enemyStats = enemy.GetComponent<UnitBaseStats>();
 
-            // Ensure enemyStats is not null and the enemy is on a different team
             if (enemyStats != null && !enemyStats.team.Equals(BaseStats.team))
             {
-                // Calculate the distance to the current enemy
                 float distanceToEnemy = Vector2.Distance(transform.position, enemyStats.transform.position);
 
-                // If this enemy is closer than the previous closest, update target
                 if (distanceToEnemy < closestDistance)
                 {
                     closestDistance = distanceToEnemy;
@@ -177,11 +160,10 @@ public class AttackMechanics : MonoBehaviour
             }
         }
 
-        // If a closest enemy is found, set it as the target
         if (closestEnemy != null)
         {
             targetEnemy = closestEnemy;
-            move.targetEnemy = closestEnemy; // Update the move target as well
+            move.targetEnemy = closestEnemy;
         }
     }
 
