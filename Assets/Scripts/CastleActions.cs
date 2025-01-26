@@ -45,10 +45,14 @@ public class SpriteCreator : MonoBehaviour
 
     public bool aiOn;
     public GameObject aiCastle;
-    private bool giftGiven = false;
-
+    float growthRate = 1.15f;
     public bool loadedToggleState;
+    public int unitCountP2;
+    public int unitCountP1;
     
+    public TextMeshProUGUI purchaseP1Text;
+    public TextMeshProUGUI purchaseP2Text;
+
     private void Start()
     {
         loadedToggleState = PlayerPrefs.GetInt("ToggleState", 0) == 1;
