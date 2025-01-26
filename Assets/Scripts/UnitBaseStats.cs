@@ -1,5 +1,10 @@
 using UnityEngine;
-
+public enum DamageType
+{
+    Magic,
+    Normal,
+    Pierce
+}
 public class UnitBaseStats : MonoBehaviour
 {
     public string team;           // Team name ("team 1" or "team 2")
@@ -11,7 +16,6 @@ public class UnitBaseStats : MonoBehaviour
     public HpBar hpBar; // Reference to the health bar object
     public float speed;
     public enum ArmorType { Cloth, Heavy, Light }
-    public enum DamageType { Magic, Normal, Pierce }
     public enum UnitClass { Mage, Archer, Guardian, Thief }
 
     public ArmorType armorType;
@@ -32,9 +36,9 @@ public class UnitBaseStats : MonoBehaviour
         {
             case UnitClass.Mage:
                 damage = 25;
-                attackSpeed = 1.5f;
-                maxHealth = 180;
-                range = 150;
+                attackSpeed = 1.7f;
+                maxHealth = 80;
+                range = 180f;
                 armorType = ArmorType.Cloth;
                 damageType = DamageType.Magic;
                 unitValue = 10f;
@@ -45,7 +49,7 @@ public class UnitBaseStats : MonoBehaviour
                 damage = 20;
                 attackSpeed = 1.2f;
                 maxHealth = 100;
-                range = 200f;
+                range = 220f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;
@@ -55,8 +59,8 @@ public class UnitBaseStats : MonoBehaviour
             case UnitClass.Guardian:
                 damage = 7;
                 attackSpeed = 0.8f;
-                maxHealth = 300;
-                range = 65;
+                maxHealth = 200;
+                range = 70;
                 armorType = ArmorType.Heavy;
                 damageType = DamageType.Normal;
                 unitValue = 10f;
@@ -64,9 +68,9 @@ public class UnitBaseStats : MonoBehaviour
                 break;
             case UnitClass.Thief:
                 damage = 18;
-                attackSpeed = 1.8f;
+                attackSpeed = 0.6f;
                 maxHealth = 130;
-                range = 65;
+                range = 70;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;

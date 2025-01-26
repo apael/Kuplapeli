@@ -56,8 +56,6 @@ public class SpriteCreator : MonoBehaviour
     private void Start()
     {
         loadedToggleState = PlayerPrefs.GetInt("ToggleState", 0) == 1;
-        Debug.Log("Loaded Toggle State: " + loadedToggleState);
-        // Automatically start animation when the GameObject is created
         money = GetComponent<MoneyManager>();
         UpdateWeightsTextP2();
         UpdateWeightsTextP1();
