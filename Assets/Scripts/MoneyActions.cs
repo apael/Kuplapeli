@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;  // Required for TextMeshPro components
+using UnityEngine.UI;
 
 public class MoneyManager : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class MoneyManager : MonoBehaviour
     public float IncomeP2;
     private float updateTimer = 0f;
     private float updateCooldown = 10f;
+    public Slider progressBar; 
 
-    // Start is called before the first frame update
     void Start()
     {
         p1Money = 100f;
@@ -27,14 +28,15 @@ public class MoneyManager : MonoBehaviour
 
     void Update()
     {
-        updateTimer += Time.deltaTime; // Increment the timer
-        if (updateTimer >= updateCooldown) // Check if enough time has passed
+        updateTimer += Time.deltaTime;
+        progressBar.value = updateTimer / updateCooldown;
+
+        if (updateTimer >= updateCooldown)
         {
-            updateTimer = 0f; // Reset the timer
+            updateTimer = 0f;
             SpendMoneyP2(-IncomeP2);
             SpendMoneyP1(-IncomeP1);
         }
-
     }
 
 
