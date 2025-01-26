@@ -3,46 +3,41 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    public GameObject StoryToHide;
-    public GameObject HowToHide;
+
+    public GameObject[] backgroundImages;
     // Optional: Overload method to dynamically set the scene name and load it
     public void ChangeScene(string targetSceneName)
     {
         SceneManager.LoadScene(targetSceneName);
     }
+    // Method to activate a specific background and hide the rest
+    public void ShowBackground(int index)
+    {
+        for (int i = 0; i < backgroundImages.Length; i++)
+        {
+            backgroundImages[i].SetActive(i == index); // Only activate the selected background
+        }
+    }
+
+    // Button events for each background
     public void OnStoryButtonClick()
     {
-        // Check if the canvas is not already null
-        if (StoryToHide != null)
-        {
-            StoryToHide.SetActive(false); // Hide the canvas
-        }
+        ShowBackground(0); // Show the first background (Story)
     }
-    public void OnBackButtonClick()
-    {
-        // Check if the canvas is not already null
-        if (StoryToHide != null)
-        {
-            StoryToHide.SetActive(true); // Hide the canvas
-        }
-    }
+
     public void OnHowToButtonClick()
     {
-        // Check if the canvas is not already null
-        if (HowToHide != null)
-        {
-            StoryToHide.SetActive(false);
-            HowToHide.SetActive(false); // Hide the canvas
-            
-        }
+        ShowBackground(1); // Show the second background (How To)
     }
-    public void OnHowToBackButtonClick()
+
+    public void OnCreditButtonClick()
     {
-        // Check if the canvas is not already null
-        if (HowToHide != null)
-        {
-            HowToHide.SetActive(true); // Hide the canvas
-            StoryToHide.SetActive(true);
-        }
+        ShowBackground(2); // Show the third background (Credit)
     }
+
+    public void OnBackButtonClick()
+    {
+        ShowBackground(3); // Show the fourth background (Main Menu or default)
+    }
+    
 }
