@@ -67,25 +67,46 @@ public class AttackMechanics : MonoBehaviour
 
     IEnumerator MoveProjectile(GameObject projectile, Transform targetEnemy)
     {
-        Vector3 startPosition = projectile.transform.position;
-        Vector3 targetPosition = targetEnemy.position;
-        Vector3 targetScreenPosition = Camera.main.WorldToScreenPoint(targetEnemy.position);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), targetScreenPosition, null, out Vector2 targetLocalPosition);
 
-
-        while (projectile != null && projectile.transform.position != targetEnemy.position)
+        if (projectile == null || targetEnemy == null || BaseStats == null)
         {
+            Destroy(projectile);
+            yield break; // Exit early if the projectile or target is null
+        }
+
+        Vector3 targetPosition = targetEnemy.position;
+
+        while (projectile != null && targetEnemy != null)
+        {
+            // If the target has been destroyed or nullified during movement
+            if (targetEnemy == null)
+            {
+                Destroy(projectile);
+                yield break; // Exit the coroutine early
+            }
+
+            // Move the projectile towards the target position
             projectile.transform.position = Vector3.MoveTowards(projectile.transform.position, targetPosition, 300f * Time.deltaTime);
+
+            // If the projectile is close enough to the target, destroy it
             if (Vector3.Distance(projectile.transform.position, targetPosition) < 3f)
             {
                 Destroy(projectile);
-                break;
+                break; // Exit the loop after destroying the projectile
             }
+
+            // Yield until the next frame
             yield return null;
         }
+        Destroy(projectile);
         if (targetEnemy != null)
         {
             Attack(); // Perform the attack logic
+        }
+        else
+        {
+
+            Destroy(projectile);
         }
     }
 
@@ -130,39 +151,39 @@ public class AttackMechanics : MonoBehaviour
 
 
 
-private void LookForNewEnemiesInRange()
-{
-    Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
-    Transform closestEnemy = null;
-    float closestDistance = float.MaxValue; // Start with a very large distance
-
-    foreach (Collider2D enemy in enemiesInRange)
+    private void LookForNewEnemiesInRange()
     {
-        // Check if the enemy has a UnitBaseStats component
-        UnitBaseStats enemyStats = enemy.GetComponent<UnitBaseStats>();
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, BaseStats.range);
+        Transform closestEnemy = null;
+        float closestDistance = float.MaxValue; // Start with a very large distance
 
-        // Ensure enemyStats is not null and the enemy is on a different team
-        if (enemyStats != null && !enemyStats.team.Equals(BaseStats.team))
+        foreach (Collider2D enemy in enemiesInRange)
         {
-            // Calculate the distance to the current enemy
-            float distanceToEnemy = Vector2.Distance(transform.position, enemyStats.transform.position);
+            // Check if the enemy has a UnitBaseStats component
+            UnitBaseStats enemyStats = enemy.GetComponent<UnitBaseStats>();
 
-            // If this enemy is closer than the previous closest, update target
-            if (distanceToEnemy < closestDistance)
+            // Ensure enemyStats is not null and the enemy is on a different team
+            if (enemyStats != null && !enemyStats.team.Equals(BaseStats.team))
             {
-                closestDistance = distanceToEnemy;
-                closestEnemy = enemyStats.transform;
+                // Calculate the distance to the current enemy
+                float distanceToEnemy = Vector2.Distance(transform.position, enemyStats.transform.position);
+
+                // If this enemy is closer than the previous closest, update target
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestDistance = distanceToEnemy;
+                    closestEnemy = enemyStats.transform;
+                }
             }
         }
-    }
 
-    // If a closest enemy is found, set it as the target
-    if (closestEnemy != null)
-    {
-        targetEnemy = closestEnemy;
-        move.targetEnemy = closestEnemy; // Update the move target as well
+        // If a closest enemy is found, set it as the target
+        if (closestEnemy != null)
+        {
+            targetEnemy = closestEnemy;
+            move.targetEnemy = closestEnemy; // Update the move target as well
+        }
     }
-}
 
 
     private void OnDrawGizmosSelected()
