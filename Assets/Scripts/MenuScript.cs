@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    public GameObject canvasToHide;
-
+    public GameObject StoryToHide;
+    public GameObject HowToHide;
     // Optional: Overload method to dynamically set the scene name and load it
     public void ChangeScene(string targetSceneName)
     {
@@ -13,19 +13,36 @@ public class MenuScript : MonoBehaviour
     public void OnStoryButtonClick()
     {
         // Check if the canvas is not already null
-        if (canvasToHide != null)
+        if (StoryToHide != null)
         {
-            canvasToHide.SetActive(false); // Hide the canvas
-            Debug.Log("Canvas Hidden");
+            StoryToHide.SetActive(false); // Hide the canvas
         }
     }
     public void OnBackButtonClick()
     {
         // Check if the canvas is not already null
-        if (canvasToHide != null)
+        if (StoryToHide != null)
         {
-            canvasToHide.SetActive(true); // Hide the canvas
-            Debug.Log("Canvas shown");
+            StoryToHide.SetActive(true); // Hide the canvas
+        }
+    }
+    public void OnHowToButtonClick()
+    {
+        // Check if the canvas is not already null
+        if (HowToHide != null)
+        {
+            StoryToHide.SetActive(false);
+            HowToHide.SetActive(false); // Hide the canvas
+            
+        }
+    }
+    public void OnHowToBackButtonClick()
+    {
+        // Check if the canvas is not already null
+        if (HowToHide != null)
+        {
+            HowToHide.SetActive(true); // Hide the canvas
+            StoryToHide.SetActive(true);
         }
     }
 }
