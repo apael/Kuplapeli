@@ -73,7 +73,7 @@ public class SpriteSheetAnimator : MonoBehaviour
             // Calculate the traveled distance
             traveledDistance += Vector3.Distance(lastPosition, sprite.transform.position);
             lastPosition = sprite.transform.position;
-            if (Vector3.Distance(sprite.transform.position, targetCastle.transform.position) < 10f)
+            if (Vector3.Distance(sprite.transform.position, targetCastle.transform.position) < 25f)
             {
                 break; // Exit loop when very close to the target
             }

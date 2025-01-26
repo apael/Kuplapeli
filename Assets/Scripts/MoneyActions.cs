@@ -67,7 +67,7 @@ public class MoneyManager : MonoBehaviour
             {
                 increaseIncomeP2(1);
             }
-            p2Money -= amount;  
+            p2Money -= amount;
             UpdateMoneyDisplay();
             return true;
         }
@@ -103,8 +103,7 @@ public class MoneyManager : MonoBehaviour
     // Update the UI TextMeshPro with the current money
     void UpdateMoneyDisplay()
     {
-
-        moneyTextP1.text = p1Money.ToString("F2") + "/ " + IncomeP1.ToString("F0");
-        moneyTextP2.text = p2Money.ToString("F2") + "/ " + IncomeP2.ToString("F0");
+        moneyTextP1.text = "+" + IncomeP1.ToString("F0") + " | " + p1Money.ToString("F2");
+        moneyTextP2.text = "+" + IncomeP2.ToString("F0") + " | " + p2Money.ToString("F2");
     }
 }

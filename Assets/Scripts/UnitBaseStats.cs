@@ -34,7 +34,7 @@ public class UnitBaseStats : MonoBehaviour
                 damage = 25;
                 attackSpeed = 1.5f;
                 maxHealth = 180;
-                range = 100f;
+                range = 150;
                 armorType = ArmorType.Cloth;
                 damageType = DamageType.Magic;
                 unitValue = 10f;
@@ -45,7 +45,7 @@ public class UnitBaseStats : MonoBehaviour
                 damage = 20;
                 attackSpeed = 1.2f;
                 maxHealth = 100;
-                range = 150f;
+                range = 200f;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;
@@ -53,10 +53,10 @@ public class UnitBaseStats : MonoBehaviour
 
                 break;
             case UnitClass.Guardian:
-                damage = 5;
+                damage = 7;
                 attackSpeed = 0.8f;
                 maxHealth = 300;
-                range = 40f;
+                range = 65;
                 armorType = ArmorType.Heavy;
                 damageType = DamageType.Normal;
                 unitValue = 10f;
@@ -66,7 +66,7 @@ public class UnitBaseStats : MonoBehaviour
                 damage = 18;
                 attackSpeed = 1.8f;
                 maxHealth = 130;
-                range = 50f;
+                range = 65;
                 armorType = ArmorType.Light;
                 damageType = DamageType.Pierce;
                 unitValue = 10f;

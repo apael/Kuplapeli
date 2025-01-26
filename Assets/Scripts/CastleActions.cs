@@ -64,10 +64,10 @@ public class SpriteCreator : MonoBehaviour
             new UnitBaseStats.Guardian(),
             new UnitBaseStats.Thief()
         };
-        purchaseP1Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP1)):F1})";
-        purchaseP2Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP2)):F1})";
+        purchaseP1Text.text = $"{(10f * Mathf.Pow(growthRate, unitCountP1)):F1}";
+        purchaseP2Text.text = $"{(10f * Mathf.Pow(growthRate, unitCountP2)):F1}";
         aiOn = loadedToggleState;
-        Debug.Log(loadedToggleState);
+
     }
 
     void Update()
@@ -118,13 +118,13 @@ public class SpriteCreator : MonoBehaviour
     public int modifyCountP1(int amount)
     {
         unitCountP1 += amount;
-        purchaseP1Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP1)):F1})";
+        purchaseP1Text.text = $"{(10f * Mathf.Pow(growthRate, unitCountP1)):F1}";
         return unitCountP1;
     }
     public int modifyCountP2(int amount)
     {
         unitCountP2 += amount;
-        purchaseP2Text.text = $"Purchase({(10f * Mathf.Pow(growthRate, unitCountP2)):F1})";
+        purchaseP2Text.text = $"{(10f * Mathf.Pow(growthRate, unitCountP2)):F1}";
         return unitCountP2;
     }
 
