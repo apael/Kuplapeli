@@ -63,6 +63,13 @@ public class MenuScript : MonoBehaviour
         PlaySound(storyButtonSound);
         ShowBackground(3); // Show the fourth background (Main Menu or default)
     }
+    public void OnQuitButtonClick()
+    {
+        Debug.Log("QuitGame() called - Application.Quit() doesn't work in the editor.");
+        Application.Quit();
+    }
+
+
     private void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
