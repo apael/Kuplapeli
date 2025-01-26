@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 2674135b30df03d49a216d21641d2e9d
+=======
+<<<<<<<< HEAD:Assets/Resources/Canvas/social-bubbles-credits-KAYTA-TATA-2.png.meta
+guid: 4a098c059e2e7494e812e363fbaca4e7
+========
+guid: 4598102a8efb5104fbbebf6a8d8812ce
+>>>>>>>> f9bcc363c786bb060694289cc42d24fbe448cc40:Assets/Resources/Animations/defeat-both.png.meta
+>>>>>>> f9bcc363c786bb060694289cc42d24fbe448cc40
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,6 +101,22 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+<<<<<<< HEAD
+=======
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+>>>>>>> f9bcc363c786bb060694289cc42d24fbe448cc40
   spriteSheet:
     serializedVersion: 2
     sprites: []

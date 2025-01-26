@@ -106,7 +106,7 @@ public class AttackMechanics : MonoBehaviour
         UnitBaseStats collisionStats = collision.GetComponent<UnitBaseStats>();
         // Check if the object entering range is from the opposite team (not the same team)
         if (collisionStats)
-            if (!collisionStats.team.Equals(BaseStats.team))
+            if (!collisionStats.team.Equals(BaseStats.team) && !targetEnemy)
             {
                 targetEnemy = collision.transform; // Set it as the target
                 float distance = Vector2.Distance(transform.position, targetEnemy.position);
